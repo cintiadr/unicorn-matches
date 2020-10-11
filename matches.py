@@ -178,14 +178,20 @@ for r in range(1, max_dates+1):
 
 
 print("+++++++++++  Rooms +++++++++++++++")
-for id, dates in rounds.items():
-    print("===> Round %s" % id )
-    for d in dates:
-        print("%s + %s" % (d.people[0].email, d.people[1].email))
-
 try:
     rmtree('out')
 except Exception as e:
     print(e)
-
 os.mkdir('out')
+
+for id, dates in rounds.items():
+    print("===> Round %s" % id )
+    with open("out/round_%s.txt" % id, "w") as fp:
+        count = 1
+        for d in dates:
+            fp.write("Breakout room %s\n" % count)
+            print("%s + %s" % (d.people[0].email, d.people[1].email))
+            fp.write("%s\n" % d.people[0].email)
+            fp.write("%s\n" %d.people[1].email)
+            fp.write("\n\n")
+            count += 1

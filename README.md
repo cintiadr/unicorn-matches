@@ -18,3 +18,6 @@ Arguments are: CSV file and maximum number of dates per person
 ```
 ./matches.py test-files/file-3.csv 2
 ```
+
+
+Output files are created in `out` folder. 
