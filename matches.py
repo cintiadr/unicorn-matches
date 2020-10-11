@@ -9,6 +9,29 @@ import os
 max_dates = int(sys.argv[2])
 filename = sys.argv[1]
 
+room_names = {
+  1: 'red',
+  2: 'orange',
+  3: 'yellow',
+  4: 'green',
+  5: 'blue',
+  6: 'indigo',
+  7: 'violet',
+  8: 'black',
+  9: 'cian',
+  10: 'magenta',
+  11: 'teal',
+  12: 'purple',
+  13: 'gray',
+  14: 'Silver',
+  15: 'Brown',
+  16: 'Olive',
+  17: 'While',
+  18: 'Maroon',
+  19: 'Peach',
+  20: 'Sepia'
+}
+
 
 print("Reticulating splines... ")
 
@@ -193,14 +216,13 @@ os.mkdir('out')
 
 for id, data in rounds.items():
     print("===> Round %s" % id )
-    with open(os.path.join("out","round_%s.txt" % id), "w") as fp:
+    with open(os.path.join("out","round_%s.csv" % id), "w") as fp:
+        fp.write("Pre-assign Room Name,Email Address\n")
         count = 1
         for d in data['dates']:
-            fp.write("Breakout room %s\n" % count)
-            print("%s + %s" % (d.people[0].email, d.people[1].email))
-            fp.write("%s\n" % d.people[0].email)
-            fp.write("%s\n" %d.people[1].email)
-            fp.write("\n\n")
+            print("[%10s]\t%s + %s" % (room_names[count], d.people[0].email, d.people[1].email))
+            fp.write("%s,%s\n" % (room_names[count], d.people[0].email))
+            fp.write("%s,%s\n" % (room_names[count], d.people[1].email))
             count += 1
     for p in data['nonallocated_people']:
         print("Non allocated: %s" % p.email)
