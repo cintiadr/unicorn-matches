@@ -3,6 +3,8 @@
 import sys
 from random import *
 import random
+from shutil import rmtree
+import os
 
 max_dates = int(sys.argv[2])
 filename = sys.argv[1]
@@ -93,16 +95,16 @@ for p in people:
         print("It's a date! %s and %s" % (p.email, m.email))
 
 # Adding extra dates (when possible)
-print("======================")
-count = 0
-for p in people:
-    for m in people[count+1:]:
-        if p.extra_dates == "true" and m.extra_dates == "true":
-            if len(m.dates) < max_dates and len(p.dates) < max_dates:
-                print("Adding extra date: %s and %s" % (p.email, m.email))
-                p.dates.append(m)
-                m.dates.append(p)
-    count += 1
+# print("======================")
+# count = 0
+# for p in people:
+#     for m in people[count+1:]:
+#         if p.extra_dates == "true" and m.extra_dates == "true":
+#             if len(m.dates) < max_dates and len(p.dates) < max_dates:
+#                 print("Adding extra date: %s and %s" % (p.email, m.email))
+#                 p.dates.append(m)
+#                 m.dates.append(p)
+#     count += 1
 
 
 # Printing all dates
@@ -129,25 +131,50 @@ print("Using %d rooms per round" % number_rooms)
 random.shuffle(unique_dates)
 
 rounds = {}
+rounds_ids = []
+for r in range(1, max_dates+1):
+    if r not in rounds:
+        rounds[r] = []
+    rounds_ids.append(r)
+random.shuffle(rounds_ids)
+
 for r in range(1, max_dates+1):
     busy_people = []
     to_remove = None
-    print("Round %d, remaining %d dates" % (r, len(unique_dates)))
+    id = rounds_ids[r-1]
+    print("Temp round %d, remaining %d dates" % (id, len(unique_dates)))
     for d in unique_dates:
-        print("Date %s + %s " % (d.people[0].email, d.people[1].email))
+        #print("Date %s + %s " % (d.people[0].email, d.people[1].email))
         if d.people[0] not in busy_people and d.people[1] not in busy_people:
-            print("Allocating %s + %s to %d" % (d.people[0].email, d.people[1].email, r))
-            if r not in rounds:
-                rounds[r] = []
-            rounds[r].append(d)
+            print("Allocating %s + %s to %d" % (d.people[0].email, d.people[1].email, id))
+            rounds[id].append(d)
             busy_people.append(d.people[0])
             busy_people.append(d.people[1])
             to_remove = d
         else:
-            print("Skipping %s + %s to %d" % (d.people[0].email, d.people[1].email, r))
+            print("Skipping %s + %s to %d" % (d.people[0].email, d.people[1].email, id))
 
     if to_remove:
         unique_dates.remove(to_remove)
+
+    unmatched_people = []
+    random.shuffle(people)
+    for p in people:
+        if p not in busy_people:
+            if p.extra_dates == "false":
+                print("Person %s won't be allocated in round %d due to lack of matches" % (p.email, id) )
+            else:
+                unmatched_people.append(p)
+
+    for i in range(0, len(unmatched_people)-1, 2):
+        d = Date(unmatched_people[i], unmatched_people[i+1])
+        rounds[id].append(d)
+        busy_people.append(d.people[0])
+        busy_people.append(d.people[1])
+        print("Allocating unmatched date %s + %s to %d" % (d.people[0].email, d.people[1].email, id))
+
+    if (len(unmatched_people) % 2) != 0:
+        print("Person %s won't be allocated in round %d due to odd number of people" % (p.email, id) )
 
 
 print("+++++++++++  Rooms +++++++++++++++")
@@ -155,3 +182,10 @@ for id, dates in rounds.items():
     print("===> Round %s" % id )
     for d in dates:
         print("%s + %s" % (d.people[0].email, d.people[1].email))
+
+try:
+    rmtree('out')
+except Exception as e:
+    print(e)
+
+os.mkdir('out')

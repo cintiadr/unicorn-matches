@@ -1,0 +1,8 @@
+Person 1, person1@email.com,CM,CW|NB,true
+Person 2, person2@email.com,CM,CW,true
+Person 3, person3@email.com,CM,CW,true
+Person 4, person4@email.com,CW,CW|NB,true
+Person 5, person5@email.com,CW,CM|NB,true
+Person 6, person6@email.com,TW,TW|CW|NB,true
+Person 7, person7@email.com,NB,TW|CM|TM,true
+Person 8, person8@email.com,NB,NB|TW|CW,true
