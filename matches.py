@@ -193,7 +193,7 @@ os.mkdir('out')
 
 for id, data in rounds.items():
     print("===> Round %s" % id )
-    with open("out/round_%s.txt" % id, "w") as fp:
+    with open(os.path.join("out","round_%s.txt" % id), "w") as fp:
         count = 1
         for d in data['dates']:
             fp.write("Breakout room %s\n" % count)
