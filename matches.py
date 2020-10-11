@@ -40,7 +40,7 @@ class Date:
         return self.people[0].email == other.people[0].email and self.people[1].email == other.people[1].email
 
     def __hash__(self):
-        return hash(self.people[0].email + "@" + self.people[1].email)
+        return hash((self.people[0].email, self.people[1].email))
 
 # Reading CSV file
 people = []
@@ -131,31 +131,35 @@ print("Using %d rooms per round" % number_rooms)
 random.shuffle(unique_dates)
 
 rounds = {}
+
 rounds_ids = []
 for r in range(1, max_dates+1):
     if r not in rounds:
-        rounds[r] = []
+        rounds[r] = {
+            'dates': [],
+            'nonallocated_people': []
+        }
     rounds_ids.append(r)
 random.shuffle(rounds_ids)
 
 for r in range(1, max_dates+1):
     busy_people = []
-    to_remove = None
+    to_remove = []
     id = rounds_ids[r-1]
     print("Temp round %d, remaining %d dates" % (id, len(unique_dates)))
     for d in unique_dates:
         #print("Date %s + %s " % (d.people[0].email, d.people[1].email))
         if d.people[0] not in busy_people and d.people[1] not in busy_people:
             print("Allocating %s + %s to %d" % (d.people[0].email, d.people[1].email, id))
-            rounds[id].append(d)
+            rounds[id]['dates'].append(d)
             busy_people.append(d.people[0])
             busy_people.append(d.people[1])
-            to_remove = d
+            to_remove.append(d)
         else:
             print("Skipping %s + %s to %d" % (d.people[0].email, d.people[1].email, id))
 
-    if to_remove:
-        unique_dates.remove(to_remove)
+    for d in to_remove:
+        unique_dates.remove(d)
 
     unmatched_people = []
     random.shuffle(people)
@@ -163,18 +167,21 @@ for r in range(1, max_dates+1):
         if p not in busy_people:
             if p.extra_dates == "false":
                 print("Person %s won't be allocated in round %d due to lack of matches" % (p.email, id) )
+                rounds[id]['nonallocated_people'].append(p)
             else:
                 unmatched_people.append(p)
 
     for i in range(0, len(unmatched_people)-1, 2):
         d = Date(unmatched_people[i], unmatched_people[i+1])
-        rounds[id].append(d)
+        rounds[id]['dates'].append(d)
         busy_people.append(d.people[0])
         busy_people.append(d.people[1])
         print("Allocating unmatched date %s + %s to %d" % (d.people[0].email, d.people[1].email, id))
 
     if (len(unmatched_people) % 2) != 0:
+        p = unmatched_people[-1]
         print("Person %s won't be allocated in round %d due to odd number of people" % (p.email, id) )
+        rounds[id]['nonallocated_people'].append(p)
 
 
 print("+++++++++++  Rooms +++++++++++++++")
@@ -184,14 +191,16 @@ except Exception as e:
     print(e)
 os.mkdir('out')
 
-for id, dates in rounds.items():
+for id, data in rounds.items():
     print("===> Round %s" % id )
     with open("out/round_%s.txt" % id, "w") as fp:
         count = 1
-        for d in dates:
+        for d in data['dates']:
             fp.write("Breakout room %s\n" % count)
             print("%s + %s" % (d.people[0].email, d.people[1].email))
             fp.write("%s\n" % d.people[0].email)
             fp.write("%s\n" %d.people[1].email)
             fp.write("\n\n")
             count += 1
+    for p in data['nonallocated_people']:
+        print("Non allocated: %s" % p.email)
