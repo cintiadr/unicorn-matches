@@ -165,6 +165,7 @@ for r in range(1, max_dates+1):
     rounds_ids.append(r)
 random.shuffle(rounds_ids)
 
+unique_unmatched_dates = []
 for r in range(1, max_dates+1):
     busy_people = []
     to_remove = []
@@ -196,10 +197,13 @@ for r in range(1, max_dates+1):
 
     for i in range(0, len(unmatched_people)-1, 2):
         d = Date(unmatched_people[i], unmatched_people[i+1])
-        rounds[id]['dates'].append(d)
-        busy_people.append(d.people[0])
-        busy_people.append(d.people[1])
-        print("Allocating unmatched date %s + %s to %d" % (d.people[0].email, d.people[1].email, id))
+
+        if d not in unique_unmatched_dates:
+            rounds[id]['dates'].append(d)
+            unique_unmatched_dates.append(d)
+            busy_people.append(d.people[0])
+            busy_people.append(d.people[1])
+            print("Allocating unmatched date %s + %s to %d" % (d.people[0].email, d.people[1].email, id))
 
     if (len(unmatched_people) % 2) != 0:
         p = unmatched_people[-1]
