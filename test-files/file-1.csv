@@ -1,4 +1,4 @@
-Person 1, person1@email.com,TW,TW
-Person 2, person2@email.com,TW,TW|NB
-Person 3, person3@email.com,TW,TW|CM
-Person 4, person4@email.com,TW,TW
+Person 1, person1@email.com,TW,TW,true
+Person 2, person2@email.com,TW,TW|NB,true
+Person 3, person3@email.com,TW,TW|CM,true
+Person 4, person4@email.com,TW,TW,true
