@@ -145,7 +145,9 @@ for r in range(1, max_dates+1):
             to_remove = d
         else:
             print("Skipping %s + %s to %d" % (d.people[0].email, d.people[1].email, r))
-    unique_dates.remove(to_remove)
+
+    if to_remove:
+        unique_dates.remove(to_remove)
 
 
 print("+++++++++++  Rooms +++++++++++++++")
