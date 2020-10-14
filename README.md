@@ -10,7 +10,9 @@ It receives an smail CSV file as the input file, format:
 Name, email, identifies as, searching for,allows imperfect matches
 ```
 
-`Searching for` can have multiple items, separated by '|'
+`identifies as` and `Searching for` can have multiple items, separated by '|'
+
+
 `allows imperfect matches` should be either 'true' or 'false'
 
 
