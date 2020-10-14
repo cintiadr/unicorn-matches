@@ -1,5 +1,5 @@
-Person 1, person1@email.com,CM,TW|CW|NB|TM,false
-Person 2, person2@email.com,CW,TW|NB|TW,false
-Person 3, person3@email.com,TM,TW|CM,false
-Person 4, person4@email.com,TW,TW|TM|NB,false
-Person 5, person5@email.com,NB,NB|TW,false
+Person 1, person1@email.com,MN,WM|WM|NB|TM,false
+Person 2, person2@email.com,WM,WM|NB|WM,false
+Person 3, person3@email.com,TM,WM|MN,false
+Person 4, person4@email.com,WM,WM|TM|NB,false
+Person 5, person5@email.com,NB,NB|WM,false
