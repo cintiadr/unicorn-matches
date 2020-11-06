@@ -23,12 +23,6 @@ matching_fields, people = read_input_file(filename)
 possible_dates = calculate_percentage_matches(matching_fields, people)
 
 
-# for p in people:
-#     print("======================")
-#     if len(p.matches) == 0:
-#         print("No matches for %s" % p.email)
-#     for m in p.matches:
-#         print("Matched: %s and %s" % (p.email, m.email))
 
 # # Sorting based on least number of matches
 # print("======================")
