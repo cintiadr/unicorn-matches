@@ -16,10 +16,27 @@ class Person:
             self.searching_for[pi] = pp[1].split('|')
 
 
-    #     self.identifies_as = identifies_as.strip().split('|')
-    #     self.searching_for = searching_for.strip().split('|')
-    #     self.matches = []
-    #     self.dates = []
+    def short_printable(self):
+        return self.email
+
+    def printable(self): 
+       return ("%s [%s] [Imperfect Matches - %r] \n\t |-> I am: %s \n\t |-> Looking for: %s]\n" % (self.email, self.name, self.allow_imperfect_matches, self.i_am, self.searching_for) )
+
+    # calcules compability of other person based on my looking for
+    def calculate_compatibility_with(self, matching_fields_metadata, person):
+        compability = 0
+        for f in matching_fields_metadata.values():
+            field_name = f['Name']
+            percentage = f['Percentage']
+            for g in self.searching_for[field_name]:
+                if g in person.i_am[field_name]:
+                    compability += percentage
+                    break
+        
+        if not self.allow_imperfect_matches and compability < 100:
+            return -1
+        else:
+            return compability
 
     # def matches_with(self, possible_match):
     #     print("Attempting match: %s and %s" % (self.email, possible_match.email))
@@ -30,8 +47,8 @@ class Person:
     #                 return True
     #     print('Nope')
     #     return False
+        
 
 def print_people(people):
-    for p in people:
-        print(" - %s [%s] [Imperfect Matches - %r] \n\t |-> I am: %s \n\t |-> Looking for: %s]\n" 
-            % (p.name, p.email, p.allow_imperfect_matches, p.i_am, p.searching_for) )
+    for p in people.values():
+        print(" - %s" % p.printable() )

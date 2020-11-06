@@ -23,7 +23,7 @@ def _read_header(fp):
 
 def read_input_file(filename):
     print("\n ==> Reading CSV input file %s\n" % filename)
-    people = []
+    people = {}
     
     with open(filename) as fp:
         matching_fields = _read_header(fp)
@@ -31,9 +31,9 @@ def read_input_file(filename):
         lines = fp.readlines()
         for line in lines:
             fields = line.strip().split(',')
-            people.append(Person(fields[0],fields[1], fields[2], matching_fields, fields[3:]))
+            people[fields[1]] = Person(fields[0],fields[1], fields[2], matching_fields, fields[3:])
 
     print("\n ** List imported ")
     print_people(people)
     print("\n ==> Import completed for %s\n" % filename)
-    return people
+    return matching_fields, people

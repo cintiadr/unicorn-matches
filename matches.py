@@ -6,7 +6,7 @@ import sys
 # import os
 
 from person import Person,print_people
-from date import Date
+from date import Date,calculate_percentage_matches
 from input_file import read_input_file
 from config import room_names
 
@@ -15,18 +15,13 @@ filename = sys.argv[1]
 
 
 print(" ** Reticulating splines... ")
-people = read_input_file(filename)
 
+# Returns metadata about matching fields and dict for people (indexed by email)
+matching_fields, people = read_input_file(filename)
 
+# Returns list for all possible dates
+possible_dates = calculate_percentage_matches(matching_fields, people)
 
-# Finding all possible matches
-# count = 0
-# for p in people:
-#     for pm in people[count+1:]:
-#         if p.matches_with(pm):
-#             p.matches.append(pm)
-#             pm.matches.append(p)
-#     count += 1
 
 # for p in people:
 #     print("======================")
