@@ -1,6 +1,6 @@
-Name, email, allows imperfect matches, identifies as, searching for
+Name, Email, Allows Imperfect Matches, identifies as, searching for
 Person 1, person1@email.com, false, MN,WM|WM|NB|TM
 Person 2, person2@email.com, false, WM,WM|NB|WM
-Person 3, person3@email.com, false, TM,WM|MN
-Person 4, person4@email.com, false, WM,WM|TM|NB
+Person 3, person3@email.com, true, TM,WM|MN
+Person 4, person4@email.com, true, WM,WM|TM|NB
 Person 5, person5@email.com, false, NB,NB|WM

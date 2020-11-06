@@ -1,22 +1,42 @@
+## Description
+
+This code will receive a list of people as an input CSV file, 
+and generate a list of possible zoom breakout rooms for speed dating events
+based on preferences.  
+
+
+The input file should have the following format:
+
+```
+Name, email, Allows Imperfect Matches, identifies as, searching for
+```
+
+So, an example file would be:
+
+```
+Name, Email, Allows Imperfect Matches, identifies as, searching for
+Person 1, person1@email.com, false, MN,WM|WM|NB|TM
+Person 2, person2@email.com, false, WM,WM|NB|WM
+Person 3, person3@email.com, false, TM,WM|MN
+Person 4, person4@email.com, false, WM,WM|TM|NB
+Person 5, person5@email.com, false, NB,NB|WM
+
+```
+
+Field `Allows Imperfect Matches` should be either `true` or `false`. 
+In case it's `true`, only perfect matches will become dates. 
+Keeping it as `false` will return more dates. 
+
+
+Fields `identifies as` and `Searching for` can have multiple items, separated by '|'
+
+
+
 ## Usage
 
-This silly python code will do a very basic match on preferences
 
+You should pass as arguments the CSV file and number of dates required. 
 
-
-It receives an smail CSV file as the input file, format:
-
-```
-Name, email, allows imperfect matches, identifies as, searching for
-```
-
-`identifies as` and `Searching for` can have multiple items, separated by '|'
-
-
-`allows imperfect matches` should be either 'true' or 'false'
-
-
-Arguments are: CSV file and maximum number of dates per person
 ```
 python matches.py test-files/file-3.csv 2
 ```
