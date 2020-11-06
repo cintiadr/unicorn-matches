@@ -7,7 +7,7 @@ def _read_header(fp):
 
     for index, f in enumerate(header_columns):
         field_info = f.strip().split('|')
-        matching_fields[index + 1] = {
+        matching_fields[index] = {
             'Name': field_info[0],
             'Percentage': int(field_info[1].replace('%', ''))
         }
@@ -26,5 +26,5 @@ def read_input_file(filename):
         lines = fp.readlines()
         for line in lines:
             fields = line.strip().split(',')
-            people.append(Person(fields[0],fields[1], fields[2], fields[3:]))
+            people.append(Person(fields[0],fields[1], fields[2], matching_fields, fields[3:]))
     return people
