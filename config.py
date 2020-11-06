@@ -1,0 +1,22 @@
+room_names = {
+  1: 'red',
+  2: 'orange',
+  3: 'yellow',
+  4: 'green',
+  5: 'blue',
+  6: 'indigo',
+  7: 'violet',
+  8: 'black',
+  9: 'cian',
+  10: 'magenta',
+  11: 'teal',
+  12: 'purple',
+  13: 'gray',
+  14: 'Silver',
+  15: 'Brown',
+  16: 'Olive',
+  17: 'While',
+  18: 'Maroon',
+  19: 'Peach',
+  20: 'Sepia'
+}

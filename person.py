@@ -1,10 +1,11 @@
 class Person:
-    def __init__(self, name, email, identifies_as, searching_for, extra_dates):
+    def __init__(self, name, email, allow_imperfect_matches, identifies_as, searching_for):
         self.name = name.strip()
         self.email = email.strip()
+        self.allow_imperfect_matches = allow_imperfect_matches.strip()
+
         self.identifies_as = identifies_as.strip().split('|')
         self.searching_for = searching_for.strip().split('|')
-        self.extra_dates = extra_dates.strip()
         self.matches = []
         self.dates = []
 
@@ -17,3 +18,7 @@ class Person:
                     return True
         print('Nope')
         return False
+
+def print_people(people):
+    for p in people:
+        print(" - %s [%s] (non-perfect matches - %s) " % (p.name, p.email, p.allow_imperfect_matches) )

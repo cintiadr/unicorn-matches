@@ -1,5 +1,6 @@
-Person 1, person1@email.com,MN,WM,true
-Person 2, person2@email.com,MN,WM,true
-Person 3, person3@email.com,MN,WM,true
-Person 4, person4@email.com,MN,WM,true
-Person 5, person5@email.com,MN,WM,true
+Name, email, allows imperfect matches, identifies as, searching for
+Person 1,person1@email.com,true, MN,WM
+Person 2,person2@email.com,true, MN,WM
+Person 3,person3@email.com,true, MN,WM
+Person 4,person4@email.com,true, MN,WM
+Person 5,person5@email.com,true, MN,WM
