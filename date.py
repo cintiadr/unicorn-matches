@@ -19,8 +19,8 @@ def print_dates(dates):
         print(" - %s [%d%%] & %s [%d%%]" % (pair[0], d.people[pair[0]], pair[1], d.people[pair[1]]))
 
 
-def calculate_percentage_matches(matching_fields, people):
-    print("\n ==> Calculating compatibility percentage")
+def calculate_percentage_matches(matching_fields, people):  
+    print("\n ==> Calculating compatibility")
     possible_dates = []
     all_people = list(people.values())
     for index, p in enumerate(all_people):
@@ -37,6 +37,6 @@ def calculate_percentage_matches(matching_fields, people):
     
     print("\n ** List possible dates ")
     print_dates(possible_dates)
-    print("\n ==> Calculate all compatibility percentage\n")
+    print("\n ==> Finished calculating compatibility\n")
     return possible_dates
     
