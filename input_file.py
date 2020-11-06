@@ -14,6 +14,10 @@ def _read_header(fp):
         }
 
     print(" ** Matching fields detected: %s" % matching_fields)
+
+    if sum([ f['Percentage'] for f in matching_fields.values() ]) != 100:
+        raise Exception("Percentage of matching fields should be exactly 100%, please change your CSV headers")
+
     return matching_fields
 
 
