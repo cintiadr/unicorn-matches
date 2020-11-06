@@ -1,4 +1,5 @@
-from person import Person
+from person import Person,print_people
+
 
 def _read_header(fp):
     matching_fields = {}
@@ -27,4 +28,8 @@ def read_input_file(filename):
         for line in lines:
             fields = line.strip().split(',')
             people.append(Person(fields[0],fields[1], fields[2], matching_fields, fields[3:]))
+
+    print("\n ** List imported ")
+    print_people(people)
+    print("\n ==> Import completed for %s\n" % filename)
     return people

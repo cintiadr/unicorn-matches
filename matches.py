@@ -17,9 +17,6 @@ filename = sys.argv[1]
 print(" ** Reticulating splines... ")
 people = read_input_file(filename)
 
-print(" ** List imported ")
-print_people(people)
-
 
 
 # Finding all possible matches
