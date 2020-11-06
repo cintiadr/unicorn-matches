@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 
 import sys
-from random import *
 import random
 from shutil import rmtree
 import os
+
+from person import Person
+from date import Date
+from input_file import read_input_file
 
 max_dates = int(sys.argv[2])
 filename = sys.argv[1]
@@ -35,44 +38,8 @@ room_names = {
 
 print("Reticulating splines... ")
 
-
-class Person:
-    def __init__(self, name, email, identifies_as, searching_for, extra_dates):
-        self.name = name.strip()
-        self.email = email.strip()
-        self.identifies_as = identifies_as.strip().split('|')
-        self.searching_for = searching_for.strip().split('|')
-        self.extra_dates = extra_dates.strip()
-        self.matches = []
-        self.dates = []
-
-    def matches_with(self, possible_match):
-        print("Attempting match: %s and %s" % (self.email, possible_match.email))
-        for i in self.identifies_as:
-            for j in possible_match.identifies_as:
-                if i in possible_match.searching_for and j in self.searching_for:
-                    print('Yep')
-                    return True
-        print('Nope')
-        return False
-
-class Date:
-    def __init__(self, person1, person2):
-        self.people = sorted([person1, person2], key=lambda x: x.email)
-
-    def __eq__(self, other):
-        return self.people[0].email == other.people[0].email and self.people[1].email == other.people[1].email
-
-    def __hash__(self):
-        return hash((self.people[0].email, self.people[1].email))
-
 # Reading CSV file
-people = []
-with open(filename) as fp:
-    Lines = fp.readlines()
-    for line in Lines:
-        fields = line.strip().split(',')
-        people.append(Person(fields[0],fields[1], fields[2], fields[3], fields[4]))
+people = read_input_file(filename)
 
 
 # Finding all possible matches
