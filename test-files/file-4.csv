@@ -1,9 +1,9 @@
-Name, Email, Allows Imperfect Matches, identifies as, searching for
-Person 1, person1@email.com, true, MN,WM|NB
-Person 2, person2@email.com, true, MN,WM
-Person 3, person3@email.com, true, MN,WM
-Person 4, person4@email.com, true, WM,WM|NB
-Person 5, person5@email.com, true, WM,MN|NB
-Person 6, person6@email.com, true, WM,WM|WM|NB
-Person 7, person7@email.com, true, NB,WM|MN|TM
-Person 8, person8@email.com, true, NB,NB|WM|WM
+Name, Email, Imperfect Matches, Gender|100%
+Person 1, person1@email.com, true, MN@WM|NB
+Person 2, person2@email.com, true, MN@WM
+Person 3, person3@email.com, true, MN@WM
+Person 4, person4@email.com, true, WM@WM|NB
+Person 5, person5@email.com, true, WM@MN|NB
+Person 6, person6@email.com, true, WM@WM|WM|NB
+Person 7, person7@email.com, true, NB@WM|MN|TM
+Person 8, person8@email.com, true, NB@NB|WM|WM
