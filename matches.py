@@ -1,11 +1,9 @@
 import sys
-# import random
-# from shutil import rmtree
-# import os
 
-from person import Person,print_people
+
+from person import Person,print_allocated_people
 from date import Date,generate_possible_dates, retrieve_dates, initiate_rounds, allocate_dates
-from input_file import read_input_file
+from files import read_input_file,generate_output_files
 
 print(" ** Reticulating splines... ")
 
@@ -39,23 +37,9 @@ dates_per_round = initiate_rounds(people, max_dates)
 allocate_dates(dates_per_round, hc_possible_dates, people, True)
 allocate_dates(dates_per_round, lc_possible_dates, people, False)
 
+generate_output_files(dates_per_round)
 
-# print("+++++++++++  Rooms +++++++++++++++")
-# try:
-#     rmtree('out')
-# except Exception as e:
-#     print(e)
-# os.mkdir('out')
+print_allocated_people(list(dates_per_round.keys()), people)
 
-# for id, data in rounds.items():
-#     print("===> Round %s" % id )
-#     with open(os.path.join("out","round_%s.csv" % id), "w") as fp:
-#         fp.write("Pre-assign Room Name,Email Address\n")
-#         count = 1
-#         for d in data['dates']:
-#             print("[%10s]\t%s + %s" % (room_names[count], d.people[0].email, d.people[1].email))
-#             fp.write("%s,%s\n" % (room_names[count], d.people[0].email))
-#             fp.write("%s,%s\n" % (room_names[count], d.people[1].email))
-#             count += 1
-#     for p in data['nonallocated_people']:
-#         print("Non allocated: %s" % p.email)
+
+

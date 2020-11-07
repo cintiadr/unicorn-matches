@@ -1,4 +1,7 @@
 from person import Person,print_people
+from shutil import rmtree
+import os
+from config import room_names
 
 
 def _read_header(fp):
@@ -37,3 +40,26 @@ def read_input_file(filename):
     print_people(people)
     print("\n ==> Import completed for %s\n" % filename)
     return matching_fields, people
+
+def generate_output_files(dates_per_round):
+    # dates_per_round is a dict round_numer -> List of Dates with 'None' for all empty slots
+    print("\n ==> Generating output files\n")
+    try:
+        rmtree('out')
+    except Exception as e:
+        print(e)
+    os.mkdir('out')
+
+    for r, dates in dates_per_round.items():
+        print(" ** Round %s (%d dates)" % (r, len(dates)) )
+        with open(os.path.join("out","round_%s.csv" % r), "w") as fp:
+            fp.write("Pre-assign Room Name,Email Address\n")
+            count = 1
+            for d in dates:
+                print(" \-> [%10s] {%s}" % (room_names[count], d.printable()))
+                pair = d.get_emails()
+                fp.write("%s,%s\n" % (room_names[count], pair[0]))
+                fp.write("%s,%s\n" % (room_names[count], pair[1]))
+                count += 1
+
+    print("\n ==> Finished generating output files\n")

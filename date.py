@@ -17,6 +17,10 @@ class Date:
         pair = sorted(self.people.keys(), key=lambda x: x)
         return "(%s) [%d%%] & (%s) [%d%%]" % (pair[0], self.people[pair[0]], pair[1], self.people[pair[1]])
     
+    def get_emails(self):
+        pair = sorted(self.people.keys(), key=lambda x: x)
+        return pair
+    
     def __repr__(self):
         pair = sorted(self.people.keys(), key=lambda x: x)
         return "(%s)&(%s)" % (pair[0],pair[1])
