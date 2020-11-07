@@ -88,7 +88,21 @@ Failing to do that will yield what looks like random results.
 
 ### How dates are selected
 
-TBD
+Firstly, the script attempts to discover all potential dates that can happen. 
+It will _only_ exclude the ones where a person explicitaly asked to not match with imperfect matches. 
+
+Then it will separate dates between `high compatibility` and `low compatibility`. 
+`High compatibility` is when both sides have prefered matches to _at least_ the main/biggest matching field. 
+
+The system will start allocating `high compatibility` dates, 
+ordered by people who had the least amount of dates (and preferences compability). 
+It will randomly select the rounds to allocated those dates. 
+
+If there's available spots, the system will move to `low compatibility` dates, ordered the same way. 
+
+The system might not be able to allocate a date because the people are busy, 
+the rounds is full or because there's an odd number of people. 
+
 
 ### Result files
 
