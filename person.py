@@ -6,6 +6,8 @@ class Person:
         self.email = email.strip()
         self.allow_imperfect_matches = bool(strtobool(allow_imperfect_matches.strip()))
 
+        self.allocated_rounds = []
+
         self.i_am = {}
         self.searching_for = {}
 

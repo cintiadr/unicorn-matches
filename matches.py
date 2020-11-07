@@ -4,18 +4,21 @@ import sys
 # import os
 
 from person import Person,print_people
-from date import Date,generate_possible_dates, retrieve_hc_dates
+from date import Date,generate_possible_dates, retrieve_hc_dates, initiate_rounds, allocate_dates
 from input_file import read_input_file
-from config import room_names
 
 print(" ** Reticulating splines... ")
 
+# actually allocated dates per round
+# dict round number -> date
+dates_per_round = None
+
+# =======================
 print("\n ==> Reading application arguments \n")
 max_dates = int(sys.argv[2])
 filename = sys.argv[1]
 print("\n ==> Finished reading application arguments \n")
-
-
+# =======================
 
 # Returns metadata about matching fields and people to be included (dict indexed by email)
 matching_fields, people = read_input_file(filename)
@@ -25,6 +28,18 @@ possible_dates = generate_possible_dates(matching_fields, people)
 
 # Returns high compatibility matches (dict indexed by email)
 hc_possible_dates = retrieve_hc_dates(matching_fields, possible_dates)
+
+dates_per_round = initiate_rounds(people, max_dates)
+
+allocate_dates(dates_per_round, hc_possible_dates, people)
+
+# print("\n ==> Defining order to fill in dates \n")
+
+# rounds = list(range(1,number_rooms+1))
+# #random.shuffle(rounds)
+# #print(rounds)
+# print("\n ==> Calculating rooms per round \n")
+
 
 
 # # Sorting based on least number of matches

@@ -1,3 +1,5 @@
+from config import room_names
+
 class Date:
     def __init__(self, person1, person2, compatibility_1, compatibility_2):
         self.people = {
@@ -11,17 +13,17 @@ class Date:
                 return False
         return True
 
-    # def __eq__(self, other):
-    #     return self.people.keys() == other.people.keys()
+    def __eq__(self, other):
+        return self.people.keys() == other.people.keys()
 
-    # def __hash__(self):
-    #     return hash(self.people.keys())
+    def __hash__(self):
+        return hash(self.people.keys())
 
 
-def print_dates(dates):
+def print_dates(dates, prefix = " - "):
     for d in dates:
         pair = sorted(d.people.keys(), key=lambda x: x)
-        print(" - %s [%d%%] & %s [%d%%]" % (pair[0], d.people[pair[0]], pair[1], d.people[pair[1]]))
+        print("%s%s [%d%%] & %s [%d%%]" % (prefix, pair[0], d.people[pair[0]], pair[1], d.people[pair[1]]))
 
 
 def generate_possible_dates(matching_fields, people):  
@@ -53,8 +55,8 @@ def retrieve_hc_dates(matching_fields, possible_dates):
     print(" ** Preferences matched >= %d%% for both sides is consided high compatibility" % hc_cut)
     hc_dates_list = [ d for d in possible_dates if d.combined_compatibility(hc_cut)]
 
-    print("\n ** List possible high compatibility dates (and preferences matched %)")
-    print_dates(hc_dates_list)
+    # print("\n ** List possible high compatibility dates (and preferences matched %)")
+    # print_dates(hc_dates_list)
 
     hc_dates = {}
     for d in hc_dates_list:
@@ -63,9 +65,32 @@ def retrieve_hc_dates(matching_fields, possible_dates):
                 hc_dates[p] = []
             hc_dates[p].append(d)
 
-    print("\n ** High compatibility dates per person")
+    # Sorting by compatibility
+    for p in hc_dates.keys():    
+        hc_dates[p] = sorted(hc_dates[p], key=lambda x: x.people[p])
+
+
+    print("\n ** Ordered high compatibility dates per person")
     for p in hc_dates.keys():
-        print(" - %s: %d dates" % (p, len(hc_dates[p])))
+        print(" - %s (%d dates)" % (p, len(hc_dates[p])))
+        print_dates(hc_dates[p], "\t \-> ")
 
     print("\n ==> Finished Retrieving high compatibility dates")
     return hc_dates
+
+def initiate_rounds(people, rounds):
+    print("\n ==> Creating empty rounds")
+    dates_per_round = {}
+    number_rooms = int(len(people)/2)
+    print("\n ** Initialising %d rounds of dates (configured by argument)" % (rounds))
+    print(" ** Allowing %d dates per round (for %d people)" % (number_rooms, len(people)))
+    for i in range(1,rounds+1):   
+        dates_per_round[i] = []
+        for j in range(0,number_rooms):
+            dates_per_round[i].append(None)
+    #print(dates_per_round)
+    print("\n ==> Finished creating empty rounds")
+    return dates_per_round
+
+def allocate_dates(dates_per_round, hc_possible_dates, people):
+    return dates_per_round
