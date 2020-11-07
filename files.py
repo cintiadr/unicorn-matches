@@ -54,14 +54,17 @@ def generate_output_files(dates_per_round):
         print(" ** Round %s (%d dates)" % (r, len(dates)) )
         with open(os.path.join("out","round_%s.csv" % r), "w") as fp:
             fp.write("Pre-assign Room Name,Email Address\n")
+            count = 1
             for d in dates:
                 if d is not None:
-                    print(" \-> [%10s] {%s}" % (room_names[r], d.printable()))
+                    print(" \-> [%10s] {%s}" % (room_names[count], d.printable()))
                     pair = d.get_emails()
-                    fp.write("%s,%s\n" % (room_names[r], pair[0]))
-                    fp.write("%s,%s\n" % (room_names[r], pair[1]))
+                    fp.write("%s,%s\n" % (room_names[count], pair[0]))
+                    fp.write("%s,%s\n" % (room_names[count], pair[1]))
+                    count += 1
                 else:  
                      print(" [WARN] Non allocated slot in round %d" % r)
+                
 
 
     print("\n ==> Finished generating output files\n")

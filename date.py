@@ -152,8 +152,7 @@ def allocate_dates(dates_per_round, possible_dates, people, high_compatibility =
             date_created = False
             for r in rounds_to_attempt:
                 if None not in dates_per_round[r]:
-                    if high_compatibility:
-                        print(" \-> Round %d is full, removing it from available pool" % r)
+                    print(" \-> Round %d is full, removing it from available pool" % r)
                     rounds_to_attempt.remove(r)
                 else:
                     # finding our if either people are busy already
