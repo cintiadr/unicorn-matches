@@ -6,22 +6,27 @@ import sys
 # import os
 
 from person import Person,print_people
-from date import Date,calculate_percentage_matches
+from date import Date,generate_possible_dates
 from input_file import read_input_file
 from config import room_names
 
+print(" ** Reticulating splines... ")
+
+print("\n ==> Reading application arguments \n")
 max_dates = int(sys.argv[2])
 filename = sys.argv[1]
+print("\n ==> Finished reading application arguments \n")
 
 
-print(" ** Reticulating splines... ")
 
 # Returns metadata about matching fields and dict for people (indexed by email)
 matching_fields, people = read_input_file(filename)
 
 # Returns list for all possible dates
-possible_dates = calculate_percentage_matches(matching_fields, people)
+possible_dates = generate_possible_dates(matching_fields, people)
 
+
+# ordered_possible_dates = prioritise_possible_dates(possible_dates)
 
 
 # # Sorting based on least number of matches

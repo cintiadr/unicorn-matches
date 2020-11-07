@@ -1,21 +1,54 @@
-## Description
-
-This code will receive a list of people as an input CSV file, 
-and generate a list of possible zoom breakout rooms for speed dating events
-based on preferences.  
+# Unicorn matcher
 
 
-The input file should have the following format:
+This is a python script that can be used to generate zoom breakout rooms CSV files 
+for speed dating events based on preferences. 
+
+Most configuration is added via a CSV file.
+
+This application is still pretty rough around the corners, so it will mostly give bad error messages 
+if the input is not expected. 
+
+This might not be the _perfect_ dating set, but it's usually good enough. 
+There's a little bit of randomness added, so running it multiple times might yield 
+slightly different results.  
+
+
+### Requirements
+
+
+Ensure you have `python3` command available from your command line/terminal. 
+
+Download the code from this repository and unzip it.  
+
+
+### Invocation
+
+You should pass as arguments the CSV file location and number of dates required. Input file defined below
+
+```
+# python3 matches.py <input_file.csv> <number of dates/rounds>
+
+# e.g.
+python3 matches.py test-files/file-3.csv 2
+```
+
+
+### Input file
+
+
+The input file is a CSV file should have the following format:
 
 ```
 Name, email, Imperfect Matches, [matching fields]
 ```
 
 Email needs to be unique, and it's used as the main identifier for a person. 
+Failing to do that will lead to very unusual behaviour and it's not supported. 
 
 Field `Imperfect Matches` should be either `true` or `false`. 
-In case it's `true`, only perfect matches (100%) will become dates. 
-Keeping it as `false` will return more dates. 
+In case it's `true`, only perfect preference matches (100%) will become dates. 
+Keeping it as `false` will return more dates (but might return complete non-matches). 
 
 
 You can have as many matching fields as desired. 
@@ -31,7 +64,7 @@ Order within each section isn't important.
 The exact strings used to describe the matching field is not important to the system, but the idenfier on `I am` has to the exactly the same as `Looking for`. They shouldn't have `,`, `|` or `@`. 
 
 
-So, an example file would be:
+So, an example input file would be:
 
 ```
 Name, Email, Imperfect Matches, Gender|100%
@@ -43,19 +76,7 @@ Person 5, person5@email.com, true, NB@NB|WM
 
 ```
 
-A file that isn't properly formatted will cause exceptions from `read_input_file`. 
-
-
-## Usage
-
-You should pass as arguments the CSV file location and number of dates required. 
-
-```
-# python matches.py <file> <number of dates/rounds>
-
-# e.g.
-python matches.py test-files/file-3.csv 2
-```
+### Result files
 
 
 Output files are created in `out` folder. 

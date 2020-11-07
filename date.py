@@ -6,11 +6,11 @@ class Date:
             person2.email: compatibility_2,
         }
 
-    def __eq__(self, other):
-        return self.people.keys() == other.people.keys()
+    # def __eq__(self, other):
+    #     return self.people.keys() == other.people.keys()
 
-    def __hash__(self):
-        return hash(self.people.keys())
+    # def __hash__(self):
+    #     return hash(self.people.keys())
 
 
 def print_dates(dates):
@@ -19,8 +19,8 @@ def print_dates(dates):
         print(" - %s [%d%%] & %s [%d%%]" % (pair[0], d.people[pair[0]], pair[1], d.people[pair[1]]))
 
 
-def calculate_percentage_matches(matching_fields, people):  
-    print("\n ==> Calculating compatibility")
+def generate_possible_dates(matching_fields, people):  
+    print("\n ==> Calculating possible dates")
     possible_dates = []
     all_people = list(people.values())
     for index, p in enumerate(all_people):
@@ -35,8 +35,8 @@ def calculate_percentage_matches(matching_fields, people):
                 print("  [WARN] Incompatible date: %s [%d%%] & %s [%d%%]" % (p.short_printable(), compatibility_1, pm.short_printable(), compatibility_2))
             
     
-    print("\n ** List possible dates ")
+    print("\n ** List possible dates (and preferences matched %)")
     print_dates(possible_dates)
-    print("\n ==> Finished calculating compatibility\n")
+    print("\n ==> Finished calculating possible dates\n")
     return possible_dates
     

@@ -22,7 +22,7 @@ def _read_header(fp):
 
 
 def read_input_file(filename):
-    print("\n ==> Reading CSV input file %s\n" % filename)
+    print("\n ==> Importing CSV input file %s\n" % filename)
     people = {}
     
     with open(filename) as fp:
