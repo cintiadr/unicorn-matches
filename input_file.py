@@ -31,7 +31,7 @@ def read_input_file(filename):
         lines = fp.readlines()
         for line in lines:
             fields = line.strip().split(',')
-            people[fields[1]] = Person(fields[0],fields[1], fields[2], matching_fields, fields[3:])
+            people[fields[1].strip()] = Person(fields[0],fields[1], fields[2], matching_fields, fields[3:])
 
     print("\n ** List imported ")
     print_people(people)

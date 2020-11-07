@@ -4,7 +4,7 @@ import sys
 # import os
 
 from person import Person,print_people
-from date import Date,generate_possible_dates, retrieve_hc_dates, initiate_rounds, allocate_dates
+from date import Date,generate_possible_dates, retrieve_hc_dates, initiate_rounds, allocate_hc_dates
 from input_file import read_input_file
 
 print(" ** Reticulating splines... ")
@@ -29,9 +29,10 @@ possible_dates = generate_possible_dates(matching_fields, people)
 # Returns high compatibility matches (dict indexed by email)
 hc_possible_dates = retrieve_hc_dates(matching_fields, possible_dates)
 
+# Returns a dict round_numer -> List of Dates with 'None' for all empty slots
 dates_per_round = initiate_rounds(people, max_dates)
 
-allocate_dates(dates_per_round, hc_possible_dates, people)
+allocate_hc_dates(dates_per_round, hc_possible_dates, people)
 
 # print("\n ==> Defining order to fill in dates \n")
 

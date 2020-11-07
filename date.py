@@ -1,4 +1,4 @@
-from config import room_names
+import random
 
 class Date:
     def __init__(self, person1, person2, compatibility_1, compatibility_2):
@@ -12,18 +12,21 @@ class Date:
             if c < cut_compatibility:
                 return False
         return True
+    
+    def printable(self):
+        pair = sorted(self.people.keys(), key=lambda x: x)
+        return "(%s) [%d%%] & %s [%d%%]" % (pair[0], self.people[pair[0]], pair[1], self.people[pair[1]])
 
-    def __eq__(self, other):
-        return self.people.keys() == other.people.keys()
+    # def __eq__(self, other):
+    #     return self.people.keys() == other.people.keys()
 
-    def __hash__(self):
-        return hash(self.people.keys())
+    # def __hash__(self):
+    #     return hash(self.people.keys())
 
 
 def print_dates(dates, prefix = " - "):
     for d in dates:
-        pair = sorted(d.people.keys(), key=lambda x: x)
-        print("%s%s [%d%%] & %s [%d%%]" % (prefix, pair[0], d.people[pair[0]], pair[1], d.people[pair[1]]))
+        print("%s%s" % (prefix, d.printable()))
 
 
 def generate_possible_dates(matching_fields, people):  
@@ -66,13 +69,15 @@ def retrieve_hc_dates(matching_fields, possible_dates):
             hc_dates[p].append(d)
 
     # Sorting by compatibility
-    for p in hc_dates.keys():    
+    # But ramdomise first to mix same compatibility
+    for p in hc_dates.keys():   
+        random.shuffle(hc_dates[p]) 
         hc_dates[p] = sorted(hc_dates[p], key=lambda x: x.people[p])
 
 
     print("\n ** Ordered high compatibility dates per person")
     for p in hc_dates.keys():
-        print(" - %s (%d dates)" % (p, len(hc_dates[p])))
+        print(" - (%s) [%d dates]" % (p, len(hc_dates[p])))
         print_dates(hc_dates[p], "\t \-> ")
 
     print("\n ==> Finished Retrieving high compatibility dates")
@@ -92,5 +97,47 @@ def initiate_rounds(people, rounds):
     print("\n ==> Finished creating empty rounds")
     return dates_per_round
 
-def allocate_dates(dates_per_round, hc_possible_dates, people):
+def allocate_hc_dates(dates_per_round, possible_dates, people):
+    print("\n ==> Allocating high compatibility dates\n")
+    # possible_dates is dict email -> [Sorted Dates]
+    # people is dict email -> Person
+
+    # sorting people with less dates, but randomise first
+    # so people with same amount of dates won't necessarily be on the same order
+    all_emails = list(people.keys())
+    random.shuffle(all_emails)
+    sorted_people = sorted(all_emails, key=lambda x:len(possible_dates[x]))
+    print(" ** Attempting to allocate dates from people in this order: ")
+    print(sorted_people)
+
+    # This will be the rounds we'll attempt to allocate the dates
+    rounds_to_attempt = list(dates_per_round.keys())
+    
+    print("\n ** Allocating dates: ")
+    for p in sorted_people:
+        for d in possible_dates[p]:
+            # attempting to find a suitable round for this date
+            random.shuffle(rounds_to_attempt)
+            date_created = False
+            for r in rounds_to_attempt:
+                if None not in dates_per_round[r]:
+                    print(" \-> Round %d is full, removing it from available pool" % r)
+                    rounds_to_attempt.remove(r)
+                else:
+                    # finding our if either people are busy already
+                    people_in_date = list(d.people.keys())
+                    person1 = people[people_in_date[0]]
+                    person2 = people[people_in_date[1]]
+                    if r not in person1.allocated_rounds and r not in person2.allocated_rounds:
+                        date_created = True
+                        none_index = dates_per_round[r].index(None)
+                        dates_per_round[r][none_index] = d
+                        person1.allocated_rounds.append(r)
+                        person2.allocated_rounds.append(r)
+                        print(" \-> Date {%s} allocated to round %d" % (d.printable(), r))
+                        break
+            if not date_created:
+                print("  [WARN] Date {%s} couldn't be allocated to any round" % (d.printable()))
+
+    print("\n ==> Finished allocating high compatibility dates")
     return dates_per_round
