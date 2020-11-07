@@ -1,0 +1,8 @@
+Name, Email, Imperfect Matches, Gender|60%, Age|20%, Location|20%
+Person 1, person1@email.com, true, MN@WM|NB, 18-25@18-25|34-40, BL@IN|SL
+Person 2, person2@email.com, true, WM@WM, 34-40@18-25|34-40, IN@IN
+Person 3, person3@email.com, true, WM@WM|NB, 18-25@18-25|34-40, CE@SL|IN
+Person 4, person4@email.com, true, NB@WM|NB|MN, 18-25@18-25|34-40, CE@SL|IN
+Person 5, person5@email.com, true, MN@MN, 18-25@18-25|34-40, SL@BL
+Person 6, person6@email.com, true, MN@MN, 37-45@50-60, AL@CO
+Person 7, person7@email.com, true, TF@TF, 20-25@20-25, AK@AK|BB
