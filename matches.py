@@ -27,7 +27,7 @@ matching_fields, people = read_input_file(filename)
 possible_dates = generate_possible_dates(matching_fields, people)
 
 # Returns high compatibility matches (dict indexed by email)
-hc_possible_dates = retrieve_hc_dates(matching_fields, possible_dates)
+hc_possible_dates = retrieve_hc_dates(matching_fields, possible_dates, people)
 
 # Returns a dict round_numer -> List of Dates with 'None' for all empty slots
 dates_per_round = initiate_rounds(people, max_dates)

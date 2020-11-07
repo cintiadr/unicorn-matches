@@ -15,7 +15,11 @@ class Date:
     
     def printable(self):
         pair = sorted(self.people.keys(), key=lambda x: x)
-        return "(%s) [%d%%] & %s [%d%%]" % (pair[0], self.people[pair[0]], pair[1], self.people[pair[1]])
+        return "(%s) [%d%%] & (%s) [%d%%]" % (pair[0], self.people[pair[0]], pair[1], self.people[pair[1]])
+    
+    def __repr__(self):
+        pair = sorted(self.people.keys(), key=lambda x: x)
+        return "(%s)&(%s)" % (pair[0],pair[1])
 
     # def __eq__(self, other):
     #     return self.people.keys() == other.people.keys()
@@ -51,7 +55,7 @@ def generate_possible_dates(matching_fields, people):
     return possible_dates
     
 
-def retrieve_hc_dates(matching_fields, possible_dates):
+def retrieve_hc_dates(matching_fields, possible_dates, people):
     hc_dates_list = {}
     print("\n ==> Retrieving possible high compatibility dates")
     hc_cut = max([ f['Percentage'] for f in matching_fields.values() ])
@@ -62,10 +66,11 @@ def retrieve_hc_dates(matching_fields, possible_dates):
     # print_dates(hc_dates_list)
 
     hc_dates = {}
+    for p in people.keys():
+        hc_dates[p] = []
+
     for d in hc_dates_list:
         for p in d.people.keys():
-            if p not in hc_dates:
-                hc_dates[p] = []
             hc_dates[p].append(d)
 
     # Sorting by compatibility
@@ -106,12 +111,13 @@ def allocate_hc_dates(dates_per_round, possible_dates, people):
     # so people with same amount of dates won't necessarily be on the same order
     all_emails = list(people.keys())
     random.shuffle(all_emails)
-    sorted_people = sorted(all_emails, key=lambda x:len(possible_dates[x]))
+    sorted_people = sorted(all_emails, key=lambda x: len(possible_dates[x]))
     print(" ** Attempting to allocate dates from people in this order: ")
     print(sorted_people)
 
     # This will be the rounds we'll attempt to allocate the dates
     rounds_to_attempt = list(dates_per_round.keys())
+    dates_to_be_dropped = []
     
     print("\n ** Allocating dates: ")
     for p in sorted_people:
@@ -138,6 +144,24 @@ def allocate_hc_dates(dates_per_round, possible_dates, people):
                         break
             if not date_created:
                 print("  [WARN] Date {%s} couldn't be allocated to any round" % (d.printable()))
+                dates_to_be_dropped.append(d)
+
+
+    print("\n **  Allocated dates so far: ")
+    for r in dates_per_round:
+        print(" \-> Round %d" % r)
+        for d in dates_per_round[r]:
+            if d:
+                print(" \----> %s" % d.printable())
+            else:
+                print(" \----> Empty")
+    
+    if len(dates_to_be_dropped) != 0:
+        print("\n **  Possible dates that won't be allocated due to no rounds available: ")
+        for d in dates_to_be_dropped:
+            print(" \----> %s" % d.printable())
+    else: 
+        print("\n **  No dates dropped so far.")
 
     print("\n ==> Finished allocating high compatibility dates")
     return dates_per_round
