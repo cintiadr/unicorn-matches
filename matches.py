@@ -1,12 +1,10 @@
-#!/usr/bin/env python
-
 import sys
 # import random
 # from shutil import rmtree
 # import os
 
 from person import Person,print_people
-from date import Date,generate_possible_dates
+from date import Date,generate_possible_dates, retrieve_hc_dates
 from input_file import read_input_file
 from config import room_names
 
@@ -19,14 +17,14 @@ print("\n ==> Finished reading application arguments \n")
 
 
 
-# Returns metadata about matching fields and dict for people (indexed by email)
+# Returns metadata about matching fields and people to be included (dict indexed by email)
 matching_fields, people = read_input_file(filename)
 
 # Returns list for all possible dates
 possible_dates = generate_possible_dates(matching_fields, people)
 
-
-# ordered_possible_dates = prioritise_possible_dates(possible_dates)
+# Returns high compatibility matches (dict indexed by email)
+hc_possible_dates = retrieve_hc_dates(matching_fields, possible_dates)
 
 
 # # Sorting based on least number of matches
