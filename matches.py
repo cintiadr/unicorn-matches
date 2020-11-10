@@ -40,10 +40,11 @@ matching_fields, people = read_input_file(filename)
 possible_dates = generate_possible_dates(matching_fields, people)
 
 # Returns high compatibility matches (dict indexed by email)
-hc_possible_dates = retrieve_dates(matching_fields, possible_dates, people, True)
+hc_possible_dates, hc_cut = retrieve_dates(matching_fields, possible_dates, people, True)
 
 # Returns low compatibility matches (dict indexed by email)
-lc_possible_dates = retrieve_dates(matching_fields, possible_dates, people, False)
+# and high compatibility cut
+lc_possible_dates, _ = retrieve_dates(matching_fields, possible_dates, people, False)
 
 # Returns a dict round_numer -> List of Dates with 'None' for all empty slots
 dates_per_round = initiate_rounds(people, hc_possible_dates, min_dates, max_dates)
@@ -54,7 +55,7 @@ allocate_dates(dates_per_round, lc_possible_dates, people, False)
 
 generate_output_files(dates_per_round, subfolder)
 
-generate_summary_file(dates_per_round, dates_to_be_dropped, people, subfolder)
+generate_summary_file(dates_per_round, dates_to_be_dropped, people, hc_cut, subfolder)
 
 print_non_allocated_people(list(dates_per_round.keys()), people)
 

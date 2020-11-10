@@ -18,6 +18,14 @@ class Person:
             self.i_am[pi] = pp[0].split('|')
             self.searching_for[pi] = pp[1].split('|')
 
+    def find_non_allocated_rounds(self, rounds):
+        non_allocated_rounds = []
+        for r in rounds:
+            if r not in self.allocated_rounds:
+                non_allocated_rounds.append(r)
+
+        return non_allocated_rounds
+
 
     def short_printable(self):
         return self.email
@@ -53,3 +61,6 @@ def print_non_allocated_people(rounds, people):
             if r not in p.allocated_rounds:
                 logging.info(" ** Person %s unpaired in round %d" % (p.email, r) )
     logging.info("\n ==> Finalised searching unpaired people\n")
+
+def find_non_allocated_people_in_round(round, people):
+    return [p.email for p in people.values() if round not in p.allocated_rounds]

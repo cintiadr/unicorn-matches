@@ -7,12 +7,14 @@ class Date:
             person1.email: compatibility_1,
             person2.email: compatibility_2,
         }
+        self.high_compatibility = None
     
-    def combined_compatibility(self, cut_compatibility):
+    # combined_compatibility
+    def calculate_compatibility(self, cut_compatibility):
         for c in self.people.values():
             if c < cut_compatibility:
-                return False
-        return True
+                self.high_compatibility = False
+        self.high_compatibility = True
     
     def printable(self):
         pair = sorted(self.people.keys(), key=lambda x: x)
@@ -38,6 +40,14 @@ class Date:
 def print_dates(dates, prefix = " - "):
     for d in dates:
         logging.info("%s%s" % (prefix, d.printable()))
+
+def find_dates_per_person(dates_per_round, person):
+    selected_dates = []
+    for d_list in dates_per_round.values():
+        for d in d_list:
+            if d is not None and person.email in d.people:
+                selected_dates.append(d)
+    return selected_dates
 
 
 def generate_possible_dates(matching_fields, people):  
@@ -76,10 +86,14 @@ def retrieve_dates(matching_fields, all_possible_dates, people, high_compatibili
     hc_cut = max([ f['Percentage'] for f in matching_fields.values() ])
     logging.info(" ** Preferences matched %s %d%% for both sides is consided %s compatibility" % (operation, hc_cut, label))
     
+    for d in all_possible_dates:
+        d.calculate_compatibility(hc_cut)
+
+    
     if high_compatibility:
-        dates_list = [ d for d in all_possible_dates if d.combined_compatibility(hc_cut)]
+        dates_list = [ d for d in all_possible_dates if d.high_compatibility]
     else:
-        dates_list = [ d for d in all_possible_dates if not d.combined_compatibility(hc_cut)]
+        dates_list = [ d for d in all_possible_dates if not d.high_compatibility]
 
     # logging.info("\n ** List possible high compatibility dates (and preferences matched %)")
     # print_dates(dates_list)
@@ -105,7 +119,7 @@ def retrieve_dates(matching_fields, all_possible_dates, people, high_compatibili
         print_dates(selected_dates[p], "\t \-> ")
 
     logging.info("\n ==> Finished Retrieving %s compatibility dates" % label)
-    return selected_dates
+    return selected_dates, hc_cut
 
 def initiate_rounds(people, hc_possible_dates, min_rounds, max_rounds):
     # hc_possible_dates is dict indexed by email
