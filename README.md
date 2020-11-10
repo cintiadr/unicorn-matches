@@ -29,15 +29,18 @@ You should pass as arguments the CSV file location and number of dates required.
 
 
 ```
-# python3 matches.py --file <input_file.csv> --max-rounds <number of dates/rounds>
+# python3 matches.py --file <input_file.csv> --min-rounds <minimum number of dates> --max-rounds <max number of dates>
 
 # e.g.
 # If you are on Mac or Linux:
-python3 matches.py --file test-files/file-3.csv --max-rounds 2
+python3 matches.py --file test-files/file-3.csv --min-dates 1 --max-rounds 2
 
 # if you are on Windows:
-py matches.py --file test-files/file-3.csv --max-rounds 2
+py matches.py --file test-files/file-3.csv --min-dates 1 --max-rounds 2
 ```
+
+The total number of dates will be between the minimum and maximum. 
+The script will attempt to generate a number of dates that will allocate most high compatibility matches. 
 
 
 ### Input file
@@ -111,6 +114,8 @@ the rounds is full or because there's an odd number of people.
 
 
 Output files are created in `out` folder. 
+Each run will have a subfolder with the a different timestamp
+
 For each 'round', a file will be created:
 
 ```
