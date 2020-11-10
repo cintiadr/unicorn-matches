@@ -1,6 +1,6 @@
-Name, Email, Imperfect Matches, Gender|60%, Age|40%
-Person 1, person1@email.com, true, MN@WM, 18-25@18-25|34-40
-Person 2, person2@email.com, true, MN@WM, 18-25@18-25
-Person 3, person3@email.com, true, MN@WM, 18-25@18-25
-Person 4, person4@email.com, true, MN@WM|AG, 49-57@18-25
-Person 5, person5@email.com, true, AG@WM|MN, 18-25@18-25|25-35
+Name, Email, Minimum Compatibility, Gender|60%, Age|40%
+Person 1, person1@email.com, 0%, MN@WM, 18-25@18-25|34-40
+Person 2, person2@email.com, 0%, MN@WM, 18-25@18-25
+Person 3, person3@email.com, 0%, MN@WM, 18-25@18-25
+Person 4, person4@email.com, 0%, MN@WM|AG, 49-57@18-25
+Person 5, person5@email.com, 0%, AG@WM|MN, 18-25@18-25|25-35

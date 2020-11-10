@@ -12,8 +12,8 @@ def _read_header(fp):
     for index, f in enumerate(header_columns):
         field_info = f.strip().split('|')
         matching_fields[index] = {
-            'Name': field_info[0],
-            'Percentage': int(field_info[1].replace('%', ''))
+            'Name': field_info[0].strip(),
+            'Percentage': int(field_info[1].strip().replace('%', ''))
         }
 
     print(" ** Matching fields detected: %s" % matching_fields)

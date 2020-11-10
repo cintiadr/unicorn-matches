@@ -48,7 +48,7 @@ def generate_possible_dates(matching_fields, people):
             compatibility_1 = p.calculate_compatibility_with(matching_fields, pm)
             compatibility_2 = pm.calculate_compatibility_with(matching_fields, p)
 
-            # negative number means that person config doesn't allow an imperfect match
+            # negative number means that minimum compatibility wasn't reached
             if compatibility_1 >= 0 and compatibility_2 >= 0:
                 possible_dates.append(Date(p, pm, compatibility_1, compatibility_2))
             else:

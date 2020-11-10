@@ -1,10 +1,10 @@
 from distutils.util import strtobool
 
 class Person:
-    def __init__(self, name, email, allow_imperfect_matches, matching_fields_metadata, matching_fields_values):
+    def __init__(self, name, email, minimum_compatibility, matching_fields_metadata, matching_fields_values):
         self.name = name.strip()
         self.email = email.strip()
-        self.allow_imperfect_matches = bool(strtobool(allow_imperfect_matches.strip()))
+        self.minimum_compatibility = int(minimum_compatibility.strip().replace('%', ''))
 
         self.allocated_rounds = []
 
@@ -22,7 +22,7 @@ class Person:
         return self.email
 
     def printable(self): 
-       return ("(%s) [%s] [Imperfect Matches - %r] \n\t \-> I am: %s \n\t \-> Looking for: %s]\n" % (self.email, self.name, self.allow_imperfect_matches, self.i_am, self.searching_for) )
+       return ("(%s) [%s] [Minimum compatibility - %d%%] \n\t \-> I am: %s \n\t \-> Looking for: %s]\n" % (self.email, self.name, self.minimum_compatibility, self.i_am, self.searching_for) )
 
     # calcules compability of other person based on my looking for
     def calculate_compatibility_with(self, matching_fields_metadata, person):
@@ -35,7 +35,7 @@ class Person:
                     compability += percentage
                     break
         
-        if not self.allow_imperfect_matches and compability < 100:
+        if not compability < self.minimum_compatibility:
             return -1
         else:
             return compability

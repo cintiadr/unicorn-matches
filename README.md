@@ -29,14 +29,14 @@ You should pass as arguments the CSV file location and number of dates required.
 
 
 ```
-# python3 matches.py <input_file.csv> <number of dates/rounds>
+# python3 matches.py --file <input_file.csv> --max-rounds <number of dates/rounds>
 
 # e.g.
 # If you are on Mac or Linux:
-python3 matches.py test-files/file-3.csv 2
+python3 matches.py --file test-files/file-3.csv --max-rounds 2
 
 # if you are on Windows:
-py matches.py test-files/file-3.csv 2
+py matches.py --file test-files/file-3.csv --max-rounds 2
 ```
 
 
@@ -46,27 +46,25 @@ py matches.py test-files/file-3.csv 2
 The input file is a CSV file should have the following format:
 
 ```
-Name, email, Imperfect Matches, [matching fields]
+Name, Email, Minimum Compatibility, [matching fields]
 ```
 
 For example:
 
 ```
-Name, Email, Imperfect Matches, Gender|100%
-Person 1, person1@email.com, true, MN@WM|WM|NB|TM
-Person 2, person2@email.com, true, WM@WM|NB|WM
-Person 3, person3@email.com, true, TM@WM|MN
-Person 4, person4@email.com, true, WM@WM|TM|NB
-Person 5, person5@email.com, true, NB@NB|WM
+Name, Email, Minimum Compatibilitys, Gender|100%
+Person 1, person1@email.com, 100%, MN@WM|WM|NB|TM
+Person 2, person2@email.com, 100%, WM@WM|NB|WM
+Person 3, person3@email.com, 0%, TM@WM|MN
+Person 4, person4@email.com, 100%, WM@WM|TM|NB
+Person 5, person5@email.com, 0%, NB@NB|WM
 ```
 
 
 Email needs to be unique, and it's used as the main identifier for a person. 
 Failing to do that will lead to very unusual behaviour and it's not supported. 
 
-Field `Imperfect Matches` should be either `true` or `false`. 
-In case it's `true`, only perfect preference matches (100%) will become dates. 
-Keeping it as `false` will return more dates (but might return complete dates that have 0% compatibility). 
+Field `Minimum Compatibility` should be a percentage a person would allow in a date.  
 
 
 
@@ -94,8 +92,7 @@ Failing to do that will yield what looks like random results.
 
 ### How dates are selected
 
-Firstly, the script attempts to discover all potential dates that can happen. 
-It will _only_ exclude the ones where a person explicitaly asked to not match with imperfect matches. 
+First, the script attempts to discover all potential dates that can happen. 
 
 Then it will separate dates between `high compatibility` and `low compatibility`. 
 `High compatibility` is when both sides have prefered matches to _at least_ the main/biggest matching field. 

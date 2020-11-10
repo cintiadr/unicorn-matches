@@ -1,5 +1,5 @@
-Name, Email, Imperfect Matches, Gender|100%
-Person 1, person1@email.com, false, MN|AG@WM|MN
-Person 2, person2@email.com, false, MN@WM
-Person 3, person3@email.com, false, MN@WM
-Person 4, person4@email.com, false, MN|NB@WM|AG
+Name, Email, Minimum Compatibility, Gender|100%
+Person 1, person1@email.com, 100%, MN|AG@WM|MN
+Person 2, person2@email.com, 100%, MN@WM
+Person 3, person3@email.com, 100%, MN@WM
+Person 4, person4@email.com, 100%, MN|NB@WM|AG
