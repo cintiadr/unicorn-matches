@@ -9,8 +9,8 @@ from files import read_input_file,generate_output_files
 
 parser = argparse.ArgumentParser(description='Creates pairings for speed dating events.')
 parser.add_argument('--file', nargs='?', help='CSV file with the attendees', required=True)
-parser.add_argument('--min-rounds', nargs='?', default=3, help='Minimum number of dating rounds (default is 3)', type=int)
-parser.add_argument('--max-rounds', nargs='?', default=20, help='Maximum number of dating rounds (default is 20)', type=int)
+parser.add_argument('--min-rounds', nargs='?', default=1, help='Minimum number of dating rounds (default is 1)', type=int)
+parser.add_argument('--max-rounds', nargs='?', default=5, help='Maximum number of dating rounds (default is 5)', type=int)
 args = parser.parse_args(sys.argv[1:])
 
 
@@ -43,7 +43,7 @@ hc_possible_dates = retrieve_dates(matching_fields, possible_dates, people, True
 lc_possible_dates = retrieve_dates(matching_fields, possible_dates, people, False)
 
 # Returns a dict round_numer -> List of Dates with 'None' for all empty slots
-dates_per_round = initiate_rounds(people, min_dates, max_dates)
+dates_per_round = initiate_rounds(people, hc_possible_dates, min_dates, max_dates)
 
 # Allocates dates and adds them to dates_per_round
 allocate_dates(dates_per_round, hc_possible_dates, people, True)

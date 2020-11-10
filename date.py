@@ -106,13 +106,33 @@ def retrieve_dates(matching_fields, all_possible_dates, people, high_compatibili
     print("\n ==> Finished Retrieving %s compatibility dates" % label)
     return selected_dates
 
-def initiate_rounds(people, min_rounds, max_rounds):
+def initiate_rounds(people, hc_possible_dates, min_rounds, max_rounds):
+    # hc_possible_dates is dict indexed by email
+
+
     print("\n ==> Creating empty rounds")
     dates_per_round = {}
     number_rooms = int(len(people)/2)
-    print("\n ** Initialising %d rounds of dates (configured by argument)" % (max_rounds))
+
+    max_number_hc_dates = max([ len(d) for d in hc_possible_dates.values()])
+
+    print("\n ** Deciding number of rounds: minimum %d, maximum %d, max number of matches for a single person %d" % (min_rounds, max_rounds, max_number_hc_dates))
+
+    # Why +1? IDK. I want to give a chance to allocate all HC dates, even if placement isn't perfect
+    number_rounds = None
+    if (max_number_hc_dates + 1) >= max_rounds:
+        number_rounds = max_rounds
+        print("\n ** Initialising %d rounds of dates (based on max_rounds argument)" % (number_rounds))
+    elif  max_number_hc_dates <= min_rounds:
+        number_rounds = min_rounds
+        print("\n ** Initialising %d rounds of dates (based on min_rounds argument)" % (number_rounds))
+    else:
+        number_rounds = max_number_hc_dates + 1
+        print("\n ** Initialising %d rounds of dates (based max number of matches for a person plus one)" % (number_rounds))
+   
+
     print(" ** Allowing %d dates per round (for %d people)" % (number_rooms, len(people)))
-    for i in range(1,max_rounds+1):   
+    for i in range(1,number_rounds+1):   
         dates_per_round[i] = []
         for j in range(0,number_rooms):
             dates_per_round[i].append(None)
