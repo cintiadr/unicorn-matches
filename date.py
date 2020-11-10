@@ -1,4 +1,5 @@
 import random
+import logging
 
 class Date:
     def __init__(self, person1, person2, compatibility_1, compatibility_2):
@@ -36,11 +37,11 @@ class Date:
 
 def print_dates(dates, prefix = " - "):
     for d in dates:
-        print("%s%s" % (prefix, d.printable()))
+        logging.info("%s%s" % (prefix, d.printable()))
 
 
 def generate_possible_dates(matching_fields, people):  
-    print("\n ==> Calculating possible dates")
+    logging.info("\n ==> Calculating possible dates")
     possible_dates = []
     all_people = list(people.values())
     for index, p in enumerate(all_people):
@@ -52,12 +53,12 @@ def generate_possible_dates(matching_fields, people):
             if compatibility_1 >= 0 and compatibility_2 >= 0:
                 possible_dates.append(Date(p, pm, compatibility_1, compatibility_2))
             else:
-                print("  [WARN] Incompatible date: %s [%d%%] & %s [%d%%]" % (p.short_printable(), compatibility_1, pm.short_printable(), compatibility_2))
+                logging.info("  [WARN] Incompatible date: %s [%d%%] & %s [%d%%]" % (p.short_printable(), compatibility_1, pm.short_printable(), compatibility_2))
             
     
-    print("\n ** List possible dates (and preferences matched %)")
+    logging.info("\n ** List possible dates (and preferences matched %)")
     print_dates(possible_dates)
-    print("\n ==> Finished calculating possible dates\n")
+    logging.info("\n ==> Finished calculating possible dates\n")
     return possible_dates
     
 
@@ -71,16 +72,16 @@ def retrieve_dates(matching_fields, all_possible_dates, people, high_compatibili
         label = "low"
         operation = "<"    
 
-    print("\n ==> Retrieving possible %s compatibility dates" % label)
+    logging.info("\n ==> Retrieving possible %s compatibility dates" % label)
     hc_cut = max([ f['Percentage'] for f in matching_fields.values() ])
-    print(" ** Preferences matched %s %d%% for both sides is consided %s compatibility" % (operation, hc_cut, label))
+    logging.info(" ** Preferences matched %s %d%% for both sides is consided %s compatibility" % (operation, hc_cut, label))
     
     if high_compatibility:
         dates_list = [ d for d in all_possible_dates if d.combined_compatibility(hc_cut)]
     else:
         dates_list = [ d for d in all_possible_dates if not d.combined_compatibility(hc_cut)]
 
-    # print("\n ** List possible high compatibility dates (and preferences matched %)")
+    # logging.info("\n ** List possible high compatibility dates (and preferences matched %)")
     # print_dates(dates_list)
 
     selected_dates = {}
@@ -98,46 +99,46 @@ def retrieve_dates(matching_fields, all_possible_dates, people, high_compatibili
         selected_dates[p] = sorted(selected_dates[p], key=lambda x: x.people[p] * (-1))
 
 
-    print("\n ** Ordered %s compatibility dates per person" % label)
+    logging.info("\n ** Ordered %s compatibility dates per person" % label)
     for p in selected_dates.keys():
-        print(" - (%s) [%d dates]" % (p, len(selected_dates[p])))
+        logging.info(" - (%s) [%d dates]" % (p, len(selected_dates[p])))
         print_dates(selected_dates[p], "\t \-> ")
 
-    print("\n ==> Finished Retrieving %s compatibility dates" % label)
+    logging.info("\n ==> Finished Retrieving %s compatibility dates" % label)
     return selected_dates
 
 def initiate_rounds(people, hc_possible_dates, min_rounds, max_rounds):
     # hc_possible_dates is dict indexed by email
 
 
-    print("\n ==> Creating empty rounds")
+    logging.info("\n ==> Creating empty rounds")
     dates_per_round = {}
     number_rooms = int(len(people)/2)
 
     max_number_hc_dates = max([ len(d) for d in hc_possible_dates.values()])
 
-    print("\n ** Deciding number of rounds: minimum %d, maximum %d, max number of matches for a single person %d" % (min_rounds, max_rounds, max_number_hc_dates))
+    logging.info("\n ** Deciding number of rounds: minimum %d, maximum %d, max number of matches for a single person %d" % (min_rounds, max_rounds, max_number_hc_dates))
 
     # Why +1? IDK. I want to give a chance to allocate all HC dates, even if placement isn't perfect
     number_rounds = None
     if (max_number_hc_dates + 1) >= max_rounds:
         number_rounds = max_rounds
-        print("\n ** Initialising %d rounds of dates (based on max_rounds argument)" % (number_rounds))
+        logging.info("\n ** Initialising %d rounds of dates (based on max_rounds argument)" % (number_rounds))
     elif  max_number_hc_dates <= min_rounds:
         number_rounds = min_rounds
-        print("\n ** Initialising %d rounds of dates (based on min_rounds argument)" % (number_rounds))
+        logging.info("\n ** Initialising %d rounds of dates (based on min_rounds argument)" % (number_rounds))
     else:
         number_rounds = max_number_hc_dates + 1
-        print("\n ** Initialising %d rounds of dates (based max number of matches for a person plus one)" % (number_rounds))
+        logging.info("\n ** Initialising %d rounds of dates (based max number of matches for a person plus one)" % (number_rounds))
    
 
-    print(" ** Allowing %d dates per round (for %d people)" % (number_rooms, len(people)))
+    logging.info(" ** Allowing %d dates per round (for %d people)" % (number_rooms, len(people)))
     for i in range(1,number_rounds+1):   
         dates_per_round[i] = []
         for j in range(0,number_rooms):
             dates_per_round[i].append(None)
-    #print(dates_per_round)
-    print("\n ==> Finished creating empty rounds")
+    #logging.info(dates_per_round)
+    logging.info("\n ==> Finished creating empty rounds")
     return dates_per_round
 
 def allocate_dates(dates_per_round, possible_dates, people, high_compatibility = True):
@@ -147,7 +148,7 @@ def allocate_dates(dates_per_round, possible_dates, people, high_compatibility =
     else:
         label = "low compatibility"
 
-    print("\n ==> Allocating %s dates\n" % label)
+    logging.info("\n ==> Allocating %s dates\n" % label)
     # possible_dates is dict email -> [Sorted Dates]
     # people is dict email -> Person
 
@@ -157,14 +158,14 @@ def allocate_dates(dates_per_round, possible_dates, people, high_compatibility =
     random.shuffle(all_emails)
     sorted_people = sorted(all_emails, key=lambda x: len(possible_dates[x]))
     if high_compatibility:
-        print(" ** Attempting to allocate %s dates from people in this order: " % label) 
-    print(sorted_people)
+        logging.info(" ** Attempting to allocate %s dates from people in this order: " % label) 
+    logging.info(sorted_people)
 
     # This will be the rounds we'll attempt to allocate the dates
     rounds_to_attempt = list(dates_per_round.keys())
     dates_to_be_dropped = []
     
-    print("\n ** Allocating %s dates: " % label)
+    logging.info("\n ** Allocating %s dates: " % label)
     for p in sorted_people:
         for d in possible_dates[p]:
             # attempting to find a suitable round for this date
@@ -172,7 +173,7 @@ def allocate_dates(dates_per_round, possible_dates, people, high_compatibility =
             date_created = False
             for r in rounds_to_attempt:
                 if None not in dates_per_round[r]:  
-                    print(" \-> Round %d is full, removing it from available pool" % r)
+                    logging.info(" \-> Round %d is full, removing it from available pool" % r)
                     rounds_to_attempt.remove(r)
                 else:
                     # finding our if either people are busy already
@@ -194,30 +195,30 @@ def allocate_dates(dates_per_round, possible_dates, people, high_compatibility =
                         people_in_date.remove(p)
                         possible_dates[people_in_date[0]].remove(d)
 
-                        print(" \-> Date {%s} allocated to round %d" % (d.printable(), r))
+                        logging.info(" \-> Date {%s} allocated to round %d" % (d.printable(), r))
                         break
             if not date_created:
                 if high_compatibility:
-                    print("  [WARN] Date {%s} couldn't be allocated to any round" % (d.printable())) 
+                    logging.info("  [WARN] Date {%s} couldn't be allocated to any round" % (d.printable())) 
                 dates_to_be_dropped.append(d)
 
 
-    print("\n **  All allocated dates so far: ")
+    logging.info("\n **  All allocated dates so far: ")
     for r in dates_per_round:
-        print(" \-> Round %d" % r)
+        logging.info(" \-> Round %d" % r)
         for d in dates_per_round[r]:
             if d:
-                print(" \----> %s" % d.printable())
+                logging.info(" \----> %s" % d.printable())
             else:
-                print(" \----> Empty")
+                logging.info(" \----> Empty")
     
     if high_compatibility:
         if len(dates_to_be_dropped) != 0:
-            print("\n **  Possible %s dates that won't be allocated due to no rounds available: " % label)
+            logging.info("\n **  Possible %s dates that won't be allocated due to no rounds available: " % label)
             for d in dates_to_be_dropped:
-                print(" \----> %s" % d.printable())
+                logging.info(" \----> %s" % d.printable())
         else: 
-            print("\n **  No %s dates dropped so far." % label)
+            logging.info("\n **  No %s dates dropped so far." % label)
 
-    print("\n ==> Finished allocating %s dates" % label)
+    logging.info("\n ==> Finished allocating %s dates" % label)
     return dates_per_round

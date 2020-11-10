@@ -1,3 +1,4 @@
+import logging
 from distutils.util import strtobool
 
 class Person:
@@ -43,12 +44,12 @@ class Person:
 
 def print_people(people):
     for p in people.values():
-        print(" - %s" % p.printable() )
+        logging.info(" - %s" % p.printable() )
 
 def print_allocated_people(rounds, people):
-    print("\n ==> Searching for unallocated people\n")
+    logging.info("\n ==> Searching for unallocated people\n")
     for r in rounds:
         for p in people.values():
             if r not in p.allocated_rounds:
-                print(" ** Person %s not allocated in round %d" % (p.email, r) )
-    print("\n ==> Finalised searching unallocated people\n")
+                logging.info(" ** Person %s not allocated in round %d" % (p.email, r) )
+    logging.info("\n ==> Finalised searching unallocated people\n")

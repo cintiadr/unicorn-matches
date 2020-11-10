@@ -1,10 +1,12 @@
 import sys
 import argparse
-
+import logging
 
 from person import Person,print_allocated_people
 from date import Date,generate_possible_dates, retrieve_dates, initiate_rounds, allocate_dates
-from files import read_input_file,generate_output_files
+from files import read_input_file,generate_output_files, generate_output_folder
+
+subfolder = generate_output_folder()
 
 
 parser = argparse.ArgumentParser(description='Creates pairings for speed dating events.')
@@ -14,20 +16,20 @@ parser.add_argument('--max-rounds', nargs='?', default=5, help='Maximum number o
 args = parser.parse_args(sys.argv[1:])
 
 
-print(" ** Reticulating splines... ")
+logging.info(" ** Reticulating splines... ")
 
 # actually allocated dates per round
 # dict round number -> date
 dates_per_round = None
 
 # =======================
-print("\n ==> Reading application arguments \n")
+logging.info("\n ==> Reading application arguments \n")
 max_dates = args.max_rounds
 min_dates = args.min_rounds
 filename = args.file
-print(" ** Using arguments: ")
-print(args)
-print("\n ==> Finished reading application arguments \n")
+logging.info(" ** Using arguments: ")
+logging.info(args)
+logging.info("\n ==> Finished reading application arguments \n")
 # =======================
 
 # Returns metadata about matching fields and people to be included (dict indexed by email)
@@ -49,7 +51,7 @@ dates_per_round = initiate_rounds(people, hc_possible_dates, min_dates, max_date
 allocate_dates(dates_per_round, hc_possible_dates, people, True)
 allocate_dates(dates_per_round, lc_possible_dates, people, False)
 
-generate_output_files(dates_per_round)
+generate_output_files(dates_per_round, subfolder)
 
 print_allocated_people(list(dates_per_round.keys()), people)
 

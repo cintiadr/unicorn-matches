@@ -3,6 +3,7 @@ from shutil import rmtree
 import os
 from config import room_names
 import datetime
+import logging
 
 
 def _read_header(fp):
@@ -17,7 +18,7 @@ def _read_header(fp):
             'Percentage': int(field_info[1].strip().replace('%', ''))
         }
 
-    print(" ** Matching fields detected: %s" % matching_fields)
+    logging.info(" ** Matching fields detected: %s" % matching_fields)
 
     if sum([ f['Percentage'] for f in matching_fields.values() ]) != 100:
         raise Exception("Percentage of matching fields should be exactly 100%, please change your CSV headers")
@@ -26,7 +27,7 @@ def _read_header(fp):
 
 
 def read_input_file(filename):
-    print("\n ==> Importing CSV input file %s\n" % filename)
+    logging.info("\n ==> Importing CSV input file %s\n" % filename)
     people = {}
     
     with open(filename) as fp:
@@ -37,35 +38,52 @@ def read_input_file(filename):
             fields = line.strip().split(',')
             people[fields[1].strip()] = Person(fields[0],fields[1], fields[2], matching_fields, fields[3:])
 
-    print("\n ** List imported ")
+    logging.info("\n ** List imported ")
     print_people(people)
-    print("\n ==> Import completed for %s\n" % filename)
+    logging.info("\n ==> Import completed for %s\n" % filename)
     return matching_fields, people
 
-def generate_output_files(dates_per_round):
-    # dates_per_round is a dict round_numer -> List of Dates with 'None' for all empty slots
-    print("\n ==> Generating output files\n")
+
+def generate_output_folder():
+    print("\n ==> Generating output folder\n")
     if not os.path.exists("out"): 
         os.mkdir('out')
     
     current_time_string = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     os.mkdir(os.path.join('out', current_time_string))
 
+    print("\n ==> Finished generating output folder\n")
+
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format="%(message)s",
+        handlers=[
+            logging.FileHandler(os.path.join("out", current_time_string, "debug.logs")),
+            logging.StreamHandler()
+        ]
+    )
+
+    return current_time_string
+
+def generate_output_files(dates_per_round, subfolder):
+    # dates_per_round is a dict round_numer -> List of Dates with 'None' for all empty slots
+    logging.info("\n ==> Generating output files\n")
+
     for r, dates in dates_per_round.items():
-        print(" ** Round %s (%d dates)" % (r, len(dates)) )
-        with open(os.path.join("out", current_time_string, "round_%s.csv" % r), "w") as fp:
+        logging.info(" ** Round %s (%d dates)" % (r, len(dates)) )
+        with open(os.path.join("out", subfolder, "round_%s.csv" % r), "w") as fp:
             fp.write("Pre-assign Room Name,Email Address\n")
             count = 1
             for d in dates:
                 if d is not None:
-                    print(" \-> [%10s] {%s}" % (room_names[count], d.printable()))
+                    logging.info(" \-> [%10s] {%s}" % (room_names[count], d.printable()))
                     pair = d.get_emails()
                     fp.write("%s,%s\n" % (room_names[count], pair[0]))
                     fp.write("%s,%s\n" % (room_names[count], pair[1]))
                     count += 1
                 else:  
-                     print(" [WARN] Non allocated slot in round %d" % r)
+                     logging.info(" [WARN] Non allocated slot in round %d" % r)
                 
 
 
-    print("\n ==> Finished generating output files\n")
+    logging.info("\n ==> Finished generating output files\n")
