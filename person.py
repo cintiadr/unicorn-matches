@@ -35,7 +35,7 @@ class Person:
                     compability += percentage
                     break
         
-        if not compability < self.minimum_compatibility:
+        if compability < self.minimum_compatibility:
             return -1
         else:
             return compability

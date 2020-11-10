@@ -23,6 +23,7 @@ dates_per_round = None
 # =======================
 print("\n ==> Reading application arguments \n")
 max_dates = args.max_rounds
+min_dates = args.min_rounds
 filename = args.file
 print(" ** Using arguments: ")
 print(args)
@@ -42,7 +43,7 @@ hc_possible_dates = retrieve_dates(matching_fields, possible_dates, people, True
 lc_possible_dates = retrieve_dates(matching_fields, possible_dates, people, False)
 
 # Returns a dict round_numer -> List of Dates with 'None' for all empty slots
-dates_per_round = initiate_rounds(people, max_dates)
+dates_per_round = initiate_rounds(people, min_dates, max_dates)
 
 # Allocates dates and adds them to dates_per_round
 allocate_dates(dates_per_round, hc_possible_dates, people, True)

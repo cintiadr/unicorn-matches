@@ -106,13 +106,13 @@ def retrieve_dates(matching_fields, all_possible_dates, people, high_compatibili
     print("\n ==> Finished Retrieving %s compatibility dates" % label)
     return selected_dates
 
-def initiate_rounds(people, rounds):
+def initiate_rounds(people, min_rounds, max_rounds):
     print("\n ==> Creating empty rounds")
     dates_per_round = {}
     number_rooms = int(len(people)/2)
-    print("\n ** Initialising %d rounds of dates (configured by argument)" % (rounds))
+    print("\n ** Initialising %d rounds of dates (configured by argument)" % (max_rounds))
     print(" ** Allowing %d dates per round (for %d people)" % (number_rooms, len(people)))
-    for i in range(1,rounds+1):   
+    for i in range(1,max_rounds+1):   
         dates_per_round[i] = []
         for j in range(0,number_rooms):
             dates_per_round[i].append(None)
