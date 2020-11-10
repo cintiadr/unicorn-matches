@@ -24,13 +24,19 @@ Download the code from this repository and unzip it.
 
 ### Invocation
 
-You should pass as arguments the CSV file location and number of dates required. Input file defined below
+You should pass as arguments the CSV file location and number of dates required. Input file defined below:
+
+
 
 ```
 # python3 matches.py <input_file.csv> <number of dates/rounds>
 
 # e.g.
+# If you are on Mac or Linux:
 python3 matches.py test-files/file-3.csv 2
+
+# if you are on Windows:
+py matches.py test-files/file-3.csv 2
 ```
 
 

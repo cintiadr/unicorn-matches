@@ -1,9 +1,18 @@
 import sys
+import argparse
 
 
 from person import Person,print_allocated_people
 from date import Date,generate_possible_dates, retrieve_dates, initiate_rounds, allocate_dates
 from files import read_input_file,generate_output_files
+
+
+parser = argparse.ArgumentParser(description='Creates pairings for speed dating events.')
+parser.add_argument('--file', nargs='?', help='CSV file with the attendees', required=True)
+parser.add_argument('--min-rounds', nargs='?', default=3, help='Minimum number of dating rounds (default is 3)', type=int)
+parser.add_argument('--max-rounds', nargs='?', default=20, help='Maximum number of dating rounds (default is 20)', type=int)
+args = parser.parse_args(sys.argv[1:])
+
 
 print(" ** Reticulating splines... ")
 
@@ -13,8 +22,10 @@ dates_per_round = None
 
 # =======================
 print("\n ==> Reading application arguments \n")
-max_dates = int(sys.argv[2])
-filename = sys.argv[1]
+max_dates = args.max_rounds
+filename = args.file
+print(" ** Using arguments: ")
+print(args)
 print("\n ==> Finished reading application arguments \n")
 # =======================
 
