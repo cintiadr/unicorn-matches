@@ -69,9 +69,11 @@ def generate_output_files(dates_per_round, subfolder):
     # dates_per_round is a dict round_numer -> List of Dates with 'None' for all empty slots
     logging.info("\n ==> Generating output files\n")
 
+    os.mkdir(os.path.join('out', subfolder, "zoom-breakout-rooms"))
+
     for r, dates in dates_per_round.items():
         logging.info(" ** Round %s (%d dates)" % (r, len(dates)) )
-        with open(os.path.join("out", subfolder, "round_%s.csv" % r), "w") as fp:
+        with open(os.path.join("out", subfolder, "zoom-breakout-rooms", "round_%s.csv" % r), "w") as fp:
             fp.write("Pre-assign Room Name,Email Address\n")
             count = 1
             for d in dates:
