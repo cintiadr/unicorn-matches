@@ -1,10 +1,11 @@
 import sys
 import argparse
 import logging
+import os
 
-from person import Person,print_allocated_people
+from person import Person,print_non_allocated_people
 from date import Date,generate_possible_dates, retrieve_dates, initiate_rounds, allocate_dates
-from files import read_input_file,generate_output_files, generate_output_folder
+from files import read_input_file,generate_output_files, generate_output_folder, generate_summary_file
 
 subfolder = generate_output_folder()
 
@@ -48,12 +49,17 @@ lc_possible_dates = retrieve_dates(matching_fields, possible_dates, people, Fals
 dates_per_round = initiate_rounds(people, hc_possible_dates, min_dates, max_dates)
 
 # Allocates dates and adds them to dates_per_round
-allocate_dates(dates_per_round, hc_possible_dates, people, True)
+dates_to_be_dropped = allocate_dates(dates_per_round, hc_possible_dates, people, True)
 allocate_dates(dates_per_round, lc_possible_dates, people, False)
 
 generate_output_files(dates_per_round, subfolder)
 
-print_allocated_people(list(dates_per_round.keys()), people)
+generate_summary_file(dates_per_round, dates_to_be_dropped, people, subfolder)
+
+print_non_allocated_people(list(dates_per_round.keys()), people)
+
+logging.info("\n ** Breakout rooms, debug logs and summary created: %s \n" % os.path.join("out", subfolder))
+
 
 
 

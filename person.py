@@ -46,10 +46,10 @@ def print_people(people):
     for p in people.values():
         logging.info(" - %s" % p.printable() )
 
-def print_allocated_people(rounds, people):
-    logging.info("\n ==> Searching for unallocated people\n")
+def print_non_allocated_people(rounds, people):
+    logging.info("\n ==> Searching for unpaired people\n")
     for r in rounds:
         for p in people.values():
             if r not in p.allocated_rounds:
-                logging.info(" ** Person %s not allocated in round %d" % (p.email, r) )
-    logging.info("\n ==> Finalised searching unallocated people\n")
+                logging.info(" ** Person %s unpaired in round %d" % (p.email, r) )
+    logging.info("\n ==> Finalised searching unpaired people\n")

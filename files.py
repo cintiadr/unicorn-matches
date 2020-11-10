@@ -89,3 +89,45 @@ def generate_output_files(dates_per_round, subfolder):
 
 
     logging.info("\n ==> Finished generating output files\n")
+
+def generate_summary_file(dates_per_round, dates_to_be_dropped, people, subfolder):
+    logging.info("\n ==> Generating summary file\n")
+    with open(os.path.join("out", subfolder, "summary.txt"), "w") as fp:
+        fp.write("Overview: \n" )
+        fp.write(" - %d rounds\n" % len(dates_per_round.items()) )
+        fp.write(" - %d dates per round \n" % len(dates_per_round[1]) )
+        fp.write(" - %d high compatibility dates dropped \n" % len(dates_to_be_dropped) )
+
+
+        total_non_allocated_people = 0
+        for r in dates_per_round.keys():
+            non_allocated_people = [p.email for p in people.values() if r not in p.allocated_rounds]
+            total_non_allocated_people += len(non_allocated_people)
+
+        fp.write(" - %d unpaired people occurences \n" % total_non_allocated_people )
+
+
+        fp.write("\n\nRounds information: \n" )
+
+        for r in dates_per_round.keys():
+            #dates = dates_per_round[r]
+
+            fp.write("  - Round %d: \n" % r)
+            non_allocated_people = [p.email for p in people.values() if r not in p.allocated_rounds]
+            fp.write("    - %d unpaired people: \n" % len(non_allocated_people))
+            for p in non_allocated_people:
+                fp.write("      - %s \n" % p)
+
+
+        fp.write("\nPeople information: \n" )
+        for email, p in people.items():
+            fp.write("  -  %s: \n" % email)
+            non_allocated_rounds = [r for r in dates_per_round.keys() if r not in p.allocated_rounds]
+            fp.write("    - %d unpaired rounds: \n" % len(non_allocated_rounds))
+            for r in non_allocated_rounds:
+                fp.write("      - Round %s \n" % r)
+
+        logging.info("\n ==> Finished summary file\n")
+
+
+    

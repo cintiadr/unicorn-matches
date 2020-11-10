@@ -121,15 +121,15 @@ def initiate_rounds(people, hc_possible_dates, min_rounds, max_rounds):
 
     # Why +1? IDK. I want to give a chance to allocate all HC dates, even if placement isn't perfect
     number_rounds = None
-    if (max_number_hc_dates + 1) >= max_rounds:
+    if max_number_hc_dates >= max_rounds:
         number_rounds = max_rounds
         logging.info("\n ** Initialising %d rounds of dates (based on max_rounds argument)" % (number_rounds))
     elif  max_number_hc_dates <= min_rounds:
         number_rounds = min_rounds
         logging.info("\n ** Initialising %d rounds of dates (based on min_rounds argument)" % (number_rounds))
     else:
-        number_rounds = max_number_hc_dates + 1
-        logging.info("\n ** Initialising %d rounds of dates (based max number of matches for a person plus one)" % (number_rounds))
+        number_rounds = max_number_hc_dates
+        logging.info("\n ** Initialising %d rounds of dates (based max number of matches)" % (number_rounds))
    
 
     logging.info(" ** Allowing %d dates per round (for %d people)" % (number_rooms, len(people)))
@@ -221,4 +221,4 @@ def allocate_dates(dates_per_round, possible_dates, people, high_compatibility =
             logging.info("\n **  No %s dates dropped so far." % label)
 
     logging.info("\n ==> Finished allocating %s dates" % label)
-    return dates_per_round
+    return dates_to_be_dropped
