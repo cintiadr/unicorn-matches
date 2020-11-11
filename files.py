@@ -98,7 +98,12 @@ def generate_summary_file(dates_per_round, dates_to_be_dropped, people, hc_cut, 
         fp.write(" - Compatibility >= %d is considered high compatibility dates \n" % hc_cut )
         fp.write(" - %d rounds\n" % len(dates_per_round.items()) )
         fp.write(" - %d dates per round \n" % len(dates_per_round[1]) )
-        fp.write(" - %d high compatibility dates dropped \n" % len(dates_to_be_dropped) )
+        fp.write(" - %d high compatibility date(s) dropped \n" % len(dates_to_be_dropped) )
+
+        lc_included_dates = []
+        for d_list in dates_per_round.values():
+            lc_included_dates.append([d for d in d_list if d.high_compatibility])
+        fp.write(" - %d low compatibility date(s) included \n" % len(dates_to_be_dropped) )
 
 
         total_non_allocated_people = 0
@@ -116,10 +121,10 @@ def generate_summary_file(dates_per_round, dates_to_be_dropped, people, hc_cut, 
             fp.write("  - Round %d: \n" % r)
 
             hc_dates = [d for d in dates if d is not None and d.high_compatibility]
-            fp.write("    - %d High compatibility dates \n" % len(hc_dates))
+            fp.write("    - %d High compatibility date(s) \n" % len(hc_dates))
 
             lc_dates = [d for d in dates if d is not None and not d.high_compatibility]
-            fp.write("    - %d Low compatibility dates \n" % len(lc_dates))
+            fp.write("    - %d Low compatibility date(s) \n" % len(lc_dates))
 
             non_allocated_people = find_non_allocated_people_in_round(r,people)
             fp.write("    - %d unpaired people \n" % len(non_allocated_people))
@@ -133,17 +138,19 @@ def generate_summary_file(dates_per_round, dates_to_be_dropped, people, hc_cut, 
             dates_per_person = find_dates_per_person(dates_per_round, p)
 
             hc_dates = [d for d in dates_per_person if d is not None and d.high_compatibility]
-            fp.write("    - %d High compatibility dates \n" % len(hc_dates))
+            fp.write("    - %d High compatibility date(s) \n" % len(hc_dates))
+
+
+            hc_dropped = [d for d in dates_to_be_dropped if d.contains_person(email)]
+            fp.write("    - %d Dropped High compatibility date(s) \n" % len(hc_dropped))
 
             lc_dates = [d for d in dates_per_person if d is not None and not d.high_compatibility]
-            fp.write("    - %d Low compatibility dates \n" % len(lc_dates))
+            fp.write("    - %d Low compatibility date(s) \n" % len(lc_dates))
 
             non_allocated_rounds = p.find_non_allocated_rounds(dates_per_round.keys())
-            fp.write("    - %d unpaired rounds \n" % len(non_allocated_rounds))
+            fp.write("    - %d unpaired round(s) \n" % len(non_allocated_rounds))
             for r in non_allocated_rounds:
                 fp.write("      - Round %s \n" % r)
 
         logging.info("\n ==> Finished summary file\n")
 
-
-    

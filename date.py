@@ -9,6 +9,9 @@ class Date:
         }
         self.high_compatibility = None
     
+    def contains_person(self, person):
+        return person in self.people
+
     # combined_compatibility
     def calculate_compatibility(self, cut_compatibility):
         for c in self.people.values():
