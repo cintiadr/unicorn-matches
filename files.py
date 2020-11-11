@@ -99,7 +99,6 @@ def generate_summary_file(dates_per_round, dates_to_be_dropped, people, hc_cut, 
         fp.write(" - %d round(s)\n" % len(dates_per_round.items()) )
         fp.write(" - %d people\n" % len(people) )
         fp.write(" - %d dates per round \n" % len(dates_per_round[1]) )
-        fp.write(" - %d High Compatibility date(s) dropped \n" % len(dates_to_be_dropped) )
 
         lc_included_dates = []
         hc_included_dates = []
@@ -107,6 +106,7 @@ def generate_summary_file(dates_per_round, dates_to_be_dropped, people, hc_cut, 
             lc_included_dates.extend([d for d in d_list if d is not None and not d.high_compatibility])
             hc_included_dates.extend([d for d in d_list if d is not None and d.high_compatibility])
         fp.write(" - %d High Compatibility date(s) included \n" % len(hc_included_dates) )
+        fp.write(" - %d High Compatibility date(s) dropped \n" % len(dates_to_be_dropped) )
         fp.write(" - %d Low Compatibility date(s) included \n" % len(lc_included_dates) )
 
 
@@ -142,14 +142,14 @@ def generate_summary_file(dates_per_round, dates_to_be_dropped, people, hc_cut, 
             dates_per_person = find_dates_per_person(dates_per_round, p)
 
             hc_dates = [d for d in dates_per_person if d is not None and d.high_compatibility]
-            fp.write("    - %d High compatibility date(s) \n" % len(hc_dates))
+            fp.write("    - %d High compatibility date(s) included \n" % len(hc_dates))
 
 
             hc_dropped = [d for d in dates_to_be_dropped if d.contains_person(email)]
-            fp.write("    - %d Dropped High compatibility date(s) \n" % len(hc_dropped))
+            fp.write("    - %d High compatibility date(s) dropped \n" % len(hc_dropped))
 
             lc_dates = [d for d in dates_per_person if d is not None and not d.high_compatibility]
-            fp.write("    - %d Low compatibility date(s) \n" % len(lc_dates))
+            fp.write("    - %d Low compatibility date(s) included \n" % len(lc_dates))
 
             non_allocated_rounds = p.find_non_allocated_rounds(dates_per_round.keys())
             fp.write("    - %d unpaired round(s) \n" % len(non_allocated_rounds))

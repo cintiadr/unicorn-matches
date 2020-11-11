@@ -185,13 +185,14 @@ def allocate_dates(dates_per_round, possible_dates, people, high_compatibility =
     
     logging.info("\n ** Allocating %s dates: " % label)
     for p in sorted_people:
+        logging.info(" \-> Person %s " % p)
         for d in possible_dates[p]:
             # attempting to find a suitable round for this date
             random.shuffle(rounds_to_attempt)
             date_created = False
             for r in rounds_to_attempt:
                 if None not in dates_per_round[r]:  
-                    logging.info(" \-> Round %d is full" % r)
+                    logging.info("   \-> Round %d is full" % r)
                 else:
                     # finding our if either people are busy already
                     people_in_date = list(d.people.keys())
@@ -212,11 +213,18 @@ def allocate_dates(dates_per_round, possible_dates, people, high_compatibility =
                         people_in_date.remove(p)
                         possible_dates[people_in_date[0]].remove(d)
 
-                        logging.info(" \-> Date {%s} allocated to round %d" % (d.printable(), r))
+                        logging.info("   \-> Date {%s} allocated to round %d" % (d.printable(), r))
                         break
             if not date_created:
                 if high_compatibility:
-                    logging.info("  [WARN] Date {%s} couldn't be allocated to any round" % (d.printable())) 
+                    logging.info("   \-> [WARN] Date {%s} couldn't be allocated to any round" % (d.printable())) 
+                people_in_date = list(d.people.keys())
+                person1 = people[people_in_date[0]]
+                person2 = people[people_in_date[1]]
+                    # delete date from other person's list
+                people_in_date.remove(p)
+                possible_dates[people_in_date[0]].remove(d)               
+
                 dates_to_be_dropped.append(d)
 
 
