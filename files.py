@@ -96,14 +96,18 @@ def generate_summary_file(dates_per_round, dates_to_be_dropped, people, hc_cut, 
     with open(os.path.join("out", subfolder, "summary.txt"), "w") as fp:
         fp.write("Overview: \n" )
         fp.write(" - Compatibility >= %d is considered high compatibility dates \n" % hc_cut )
-        fp.write(" - %d rounds\n" % len(dates_per_round.items()) )
+        fp.write(" - %d round(s)\n" % len(dates_per_round.items()) )
+        fp.write(" - %d people\n" % len(people) )
         fp.write(" - %d dates per round \n" % len(dates_per_round[1]) )
-        fp.write(" - %d high compatibility date(s) dropped \n" % len(dates_to_be_dropped) )
+        fp.write(" - %d High Compatibility date(s) dropped \n" % len(dates_to_be_dropped) )
 
         lc_included_dates = []
+        hc_included_dates = []
         for d_list in dates_per_round.values():
-            lc_included_dates.append([d for d in d_list if d.high_compatibility])
-        fp.write(" - %d low compatibility date(s) included \n" % len(dates_to_be_dropped) )
+            lc_included_dates.extend([d for d in d_list if d is not None and not d.high_compatibility])
+            hc_included_dates.extend([d for d in d_list if d is not None and d.high_compatibility])
+        fp.write(" - %d High Compatibility date(s) included \n" % len(hc_included_dates) )
+        fp.write(" - %d Low Compatibility date(s) included \n" % len(lc_included_dates) )
 
 
         total_non_allocated_people = 0

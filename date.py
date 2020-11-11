@@ -17,6 +17,7 @@ class Date:
         for c in self.people.values():
             if c < cut_compatibility:
                 self.high_compatibility = False
+                return
         self.high_compatibility = True
     
     def printable(self):
@@ -190,8 +191,7 @@ def allocate_dates(dates_per_round, possible_dates, people, high_compatibility =
             date_created = False
             for r in rounds_to_attempt:
                 if None not in dates_per_round[r]:  
-                    logging.info(" \-> Round %d is full, removing it from available pool" % r)
-                    rounds_to_attempt.remove(r)
+                    logging.info(" \-> Round %d is full" % r)
                 else:
                     # finding our if either people are busy already
                     people_in_date = list(d.people.keys())
